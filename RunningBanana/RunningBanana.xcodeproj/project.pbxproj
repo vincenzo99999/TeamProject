@@ -15,6 +15,8 @@
 		54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7B2B1F607500BBE823 /* Main.storyboard */; };
 		54C6DD7F2B1F607600BBE823 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7E2B1F607600BBE823 /* Assets.xcassets */; };
 		54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD802B1F607600BBE823 /* LaunchScreen.storyboard */; };
+		8558FAC12B2200960003A51A /* SpawnSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8558FAC02B2200960003A51A /* SpawnSystem.swift */; };
+		8558FAC32B22081A0003A51A /* MyActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8558FAC22B22081A0003A51A /* MyActions.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,8 @@
 		54C6DD7C2B1F607500BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54C6DD7E2B1F607600BBE823 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54C6DD812B1F607600BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8558FAC02B2200960003A51A /* SpawnSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpawnSystem.swift; sourceTree = "<group>"; };
+		8558FAC22B22081A0003A51A /* MyActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyActions.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 		54C6DD652B1F607500BBE823 = {
 			isa = PBXGroup;
 			children = (
+				8558FAC22B22081A0003A51A /* MyActions.sks */,
 				54C6DD702B1F607500BBE823 /* RunningBanana */,
 				54C6DD6F2B1F607500BBE823 /* Products */,
 			);
@@ -59,6 +64,7 @@
 		54C6DD702B1F607500BBE823 /* RunningBanana */ = {
 			isa = PBXGroup;
 			children = (
+				8558FAC02B2200960003A51A /* SpawnSystem.swift */,
 				54C6DD712B1F607500BBE823 /* AppDelegate.swift */,
 				54C6DD732B1F607500BBE823 /* GameScene.sks */,
 				54C6DD752B1F607500BBE823 /* Actions.sks */,
@@ -130,6 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */,
+				8558FAC32B22081A0003A51A /* MyActions.sks in Resources */,
 				54C6DD742B1F607500BBE823 /* GameScene.sks in Resources */,
 				54C6DD7F2B1F607600BBE823 /* Assets.xcassets in Resources */,
 				54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */,
@@ -146,6 +153,7 @@
 			files = (
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
 				54C6DD7A2B1F607500BBE823 /* GameViewController.swift in Sources */,
+				8558FAC12B2200960003A51A /* SpawnSystem.swift in Sources */,
 				54C6DD722B1F607500BBE823 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,7 +306,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8N7NYC4266;
+				DEVELOPMENT_TEAM = 4M3932AY72;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -311,7 +319,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vincenzo.eboli.RunningBanana;
+				PRODUCT_BUNDLE_IDENTIFIER = xwxwqo.eboli.RunningBanana;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -326,7 +334,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8N7NYC4266;
+				DEVELOPMENT_TEAM = 4M3932AY72;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -339,7 +347,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vincenzo.eboli.RunningBanana;
+				PRODUCT_BUNDLE_IDENTIFIER = xwxwqo.eboli.RunningBanana;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
