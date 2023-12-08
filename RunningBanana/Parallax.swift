@@ -22,7 +22,7 @@ class Parallax{
     }
     
 
-    func createBackground(parent: SKSpriteNode, zPosition: CGFloat, getSpritesFromFile: Bool){
+    fileprivate func createBackground(parent: SKSpriteNode, zPosition: CGFloat, getSpritesFromFile: Bool){
         for i in 0...3 {
             if !getSpritesFromFile {
                 if i==2 {continue}
@@ -49,7 +49,7 @@ class Parallax{
     }
 
 
-    func parallaxLayer(layer: SKSpriteNode?, speed: CGFloat){
+    fileprivate func parallaxLayer(layer: SKSpriteNode?, speed: CGFloat){
         layer?.position.x -= speed
         
         if (layer?.position.x)! < -scene.size.width {
