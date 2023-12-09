@@ -13,6 +13,8 @@ protocol FloorContactDelegate: AnyObject {
 }
 
 class GameScene: SKScene {
+    var scoreLabel:SKLabelNode!
+    var score:CGFloat=0
     var obstacleCounter:Int=0
     var player:SKSpriteNode!
     var screenTouched:Bool=false
@@ -51,6 +53,7 @@ class GameScene: SKScene {
         createFloor()
         createPlayer()
         createObstacle()
+        createScore()
     }
     
     
@@ -64,30 +67,38 @@ class GameScene: SKScene {
         parallax!.update(layers: parallaxLayerSprites!, speed: 0.5, speedFactor: 1.0);
         updateObstaclePosition()
         CheckPlayerSpeed()
+        updatePlayerSpeed()
         jump()
+        updateScore()
     }
     
     func elapsedTime(currentTime: TimeInterval) -> TimeInterval{
         return currentTime - startTime!
     }
+    func updateScore(){
+        score=score+((player.physicsBody?.velocity.dx)! + CGFloat(obstacleCounter)) * 0.001
+        scoreLabel.text = "\(Int(score))"
+        print(score)
+    }
     func createPlayer() {
         self.player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
         player.name = "player"
         player.physicsBody = SKPhysicsBody(circleOfRadius: 25)
-        player.position = CGPoint(x: 0, y: 15)
+        player.position = CGPoint(x: -50, y: 35)
         player.physicsBody?.affectedByGravity=true
         player.physicsBody?.categoryBitMask = 1
         player.zPosition=10
+        player.physicsBody?.allowsRotation=false
         addChild(player)
     }
     func createFloor() {
-            floor = SKSpriteNode(color: .green, size: CGSize(width: size.width, height: 10))
-            floor.position = CGPoint(x: 0, y: 0)  // Imposta la posizione del pavimento
-            floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
-            floor.physicsBody?.affectedByGravity=false
-            floor.physicsBody?.categoryBitMask = 2
-            floor.physicsBody?.isDynamic = false  // Il pavimento non si muove
-            floor.zPosition=9
+        floor = SKSpriteNode(color: .green, size: CGSize(width: size.width, height: 10))
+        floor.position = CGPoint(x: 0, y: -50)  // Imposta la posizione del pavimento
+        floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
+        floor.physicsBody?.affectedByGravity=false
+        floor.physicsBody?.categoryBitMask = 2
+        floor.physicsBody?.isDynamic = false  // Il pavimento non si muove
+        floor.zPosition=9
         addChild(floor)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -99,7 +110,7 @@ class GameScene: SKScene {
     func jump(){
         if ScreenHasBeenPressed(){
             if(!isJumping){
-                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 20))
+                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
                 isJumping=true
             }
         }
@@ -112,7 +123,12 @@ class GameScene: SKScene {
             isJumping=false
         }
     }
-    func obstacleTimer(){
+    func updatePlayerSpeed(){
+        if (player.physicsBody?.velocity.dx)!<0{
+            player.physicsBody?.velocity.dx = -(player.physicsBody?.velocity.dx)!
+        }
+        player.physicsBody?.velocity.dx+=0.3
+        player.position.x = -50
         
     }
     func updateObstaclePosition(){
@@ -129,7 +145,7 @@ class GameScene: SKScene {
     func createObstacle(){
         let randomNumber:CGFloat=CGFloat.random(in:1..<2).rounded()
         obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
-        obstacle.position = CGPoint(x: 200, y: 15)  // Imposta la posizione del pavimento
+        obstacle.position = CGPoint(x: 200, y: -35)  // Imposta la posizione del pavimento
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
         obstacle.physicsBody?.affectedByGravity=false
         obstacle.physicsBody?.categoryBitMask = 3
@@ -137,6 +153,14 @@ class GameScene: SKScene {
         obstacle.zPosition=8
         addChild(obstacle)
         obstacleCounter+=1
+    }
+    func createScore(){
+        scoreLabel = SKLabelNode(text:"\(Int(score))")
+        scoreLabel.fontSize=70.0
+        scoreLabel.color = .black
+        scoreLabel.position=CGPoint(x: -70, y: 100)
+        scoreLabel.zPosition=7
+        addChild(scoreLabel)
     }
 }
 
