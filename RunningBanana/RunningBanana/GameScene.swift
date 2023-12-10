@@ -26,7 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
     var obstacleCounter:Int=0
-    
+    var tankCounter:Int=0
     
     var screenTouched:Bool=false
     var isJumping:Bool=false
@@ -102,6 +102,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jump() //TODO fix jump
         updateScore()
         updateTankPosition()
+        activateNitro()
         if isGameOver(){
             //add gameOverView()
         }
@@ -253,7 +254,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tank.physicsBody?.affectedByGravity=false
         tank.physicsBody?.categoryBitMask=5
         tank.physicsBody?.contactTestBitMask = 5
-        tank.physicsBody?.isDynamic=true
+        tank.physicsBody?.isDynamic=false
         tank.zPosition=11
         tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
         
@@ -295,6 +296,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.zPosition=7
         addChild(scoreLabel)
     }
+    func activateNitro(){
+        if tankCounter%10==0 && tankCounter != 0 {
+            player.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 0))
+        }
+    }
     
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
@@ -312,11 +318,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if let node = firstBody.node, node.name == "tank" {
             node.removeFromParent()
+            tankCounter+=1
             createTank()
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "tank" {
             node.removeFromParent()
+            tankCounter+=1
             createTank()
             print("contatto rilevato")
         }
