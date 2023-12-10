@@ -13,6 +13,7 @@ struct PhysicsCategory{
     static let player : UInt32 = 0b1
     static let watermelon : UInt32 = 0b10
     static let floor:UInt32=0b11
+    static let tank:UInt32=0b100
 }
 protocol FloorContactDelegate: AnyObject {
     func playerDidContactFloor()
@@ -22,7 +23,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     var player:SKSpriteNode!
-    
+    var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
     var obstacleCounter:Int=0
     
@@ -78,7 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createObstacle()
         createScore()
         createWatermelon()
-        
+        createTank()
         //Road
         parallaxLayerSprites?.append(floor)
         
@@ -100,6 +101,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateWatermelonPosition()
         jump() //TODO fix jump
         updateScore()
+        updateTankPosition()
         if isGameOver(){
             //add gameOverView()
         }
@@ -242,6 +244,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    func createTank(){
+        tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
+        tank.position.x = 70
+        tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        tank.name="tank"
+        tank.physicsBody=SKPhysicsBody(circleOfRadius:25)
+        tank.physicsBody?.affectedByGravity=false
+        tank.physicsBody?.categoryBitMask=5
+        tank.physicsBody?.contactTestBitMask = 5
+        tank.physicsBody?.isDynamic=true
+        tank.zPosition=11
+        tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
+        
+        tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        tank.physicsBody?.collisionBitMask = PhysicsCategory.player
+        
+        addChild(tank)
+    }
+    func updateTankPosition(){
+        tank.position.x -= posizionex
+        if tank.position.x < -frame.width - 30{
+            if let node=tank{
+                node.removeFromParent()
+                createTank()
+            }
+        }
+    }
     func createObstacle(){
 
         let randomNumber: Int = Int.random(in:1..<3)
@@ -279,6 +308,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = secondBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
+            print("contatto rilevato")
+        }
+        if let node = firstBody.node, node.name == "tank" {
+            node.removeFromParent()
+            createTank()
+            print("contatto rilevato")
+        }
+        if let node = secondBody.node, node.name == "tank" {
+            node.removeFromParent()
+            createTank()
             print("contatto rilevato")
         }
     }
