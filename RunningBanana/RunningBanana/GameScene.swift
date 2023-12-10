@@ -19,20 +19,33 @@ protocol FloorContactDelegate: AnyObject {
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    var scoreLabel:SKLabelNode!
-    var score:CGFloat=0
-    var obstacleCounter:Int=0
+    
+    
     var player:SKSpriteNode!
+    
+    var obstacle:SKSpriteNode!
+    var obstacleCounter:Int=0
+    
+    
     var screenTouched:Bool=false
     var isJumping:Bool=false
-    var obstacle:SKSpriteNode!
+    
+    //Floor
+    var floorHeight: CGFloat = 150
     weak var floorContactDelegate: FloorContactDelegate?
     var floor:SKSpriteNode!
+    var roadSprite: SKSpriteNode? = nil
+    
+    //Score
+    var scoreLabel:SKLabelNode!
+    var score:CGFloat=0
+    
     //Parallax Array
     var parallaxLayerSprites: [SKSpriteNode?]? = []
     var parallax: Parallax? = nil
     var watermelon:SKSpriteNode!
     
+    //Running Time
     var startTime: TimeInterval? = nil
     var hasStartTimeBeenAssigned = false
     
@@ -41,11 +54,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var velocityuser: CGFloat = 0.5
     
     
-    
     override func sceneDidLoad() {
         
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         self.physicsWorld.gravity=CGVector(dx: 0, dy: -2)
+        
         //get layers, somewhere
         let backTreeSprite = childNode(withName: "backTreeSprite") as! SKSpriteNode?
         let middleTreeSprite = childNode(withName: "middleTreeSprite") as! SKSpriteNode?
@@ -59,16 +72,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         parallaxLayerSprites?.append(lightSprite)
         parallaxLayerSprites?.append(frontTreeSprite)
         
-        parallax = Parallax(scene: self, parallaxLayerSprites: parallaxLayerSprites!, getSpritesFromFile: false)
+        
         createFloor()
         createPlayer()
         createObstacle()
         createScore()
         createWatermelon()
+        
+        //Road
+        parallaxLayerSprites?.append(floor)
+        
+        parallax = Parallax(scene: self, parallaxLayerSprites: parallaxLayerSprites!, getSpritesFromFile: false)
     }
     
-    
-    
+
     override func update(_ currentTime: TimeInterval) {
         if !hasStartTimeBeenAssigned {
             startTime = currentTime
@@ -76,17 +93,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         parallax!.update(layers: parallaxLayerSprites!, speed: velocityuser, speedFactor: 0.8);
+
         updateObstaclePosition()
         CheckPlayerSpeed()
         updatePlayerSpeed()
         updateWatermelonPosition()
-        jump()
+        jump() //TODO fix jump
         updateScore()
-        if GameOver(){
+        if isGameOver(){
             //add gameOverView()
         }
     }
-    func GameOver()->Bool{
+
+    func isGameOver()->Bool{
+
         if player.position.x <= frame.width || player.position.y < floor.position.y{
             return true
         }
@@ -120,9 +140,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.zPosition = 10
         addChild(player)
     }
+    
     func createFloor() {
-        floor = SKSpriteNode(color: .red, size: CGSize(width: size.width, height: 10))
-        floor.position = CGPoint(x: 0, y: -50)  // Imposta la posizione del pavimento
+        floor = SKSpriteNode(color: .red, size: CGSize(width: scene!.size.width*3, height: floorHeight/2))
+        floor.name = "floor"
+        floor.position = CGPoint(x: 0, y: -floorHeight)  // Imposta la posizione del pavimento
         floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
         floor.physicsBody?.affectedByGravity=false
         floor.physicsBody?.categoryBitMask = 2|PhysicsCategory.floor
@@ -130,13 +152,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.physicsBody?.contactTestBitMask = PhysicsCategory.player
         floor.physicsBody?.collisionBitMask = PhysicsCategory.player
         floor.physicsBody?.isDynamic = false  // Il pavimento non si muove
-        floor.zPosition=9
+        floor.zPosition=0
+        
+        
+        
+        let roadInstancesNumber: Int = 4
+        let instanceWidth = (scene!.size.width*3)/CGFloat(roadInstancesNumber)
+        
+        for instance in 0...roadInstancesNumber{
+            
+            roadSprite = SKSpriteNode(imageNamed: "road")
+            roadSprite?.zPosition = 5
+            roadSprite?.size = CGSize(width: instanceWidth, height: (roadSprite?.size.height)! * 1.5)
+            
+            roadSprite?.position.x = (instanceWidth * CGFloat(instance)) - scene!.size.width/2
+            floor.addChild(roadSprite!)
+        }
+        
         addChild(floor)
+        
+        
     }
+    
+    //TODO spawn watermelons outside the screen
     func createWatermelon(){
         watermelon=SKSpriteNode(color: .green, size: CGSize(width: 25, height: 25))
-        watermelon.position.x=70
-        watermelon.position.y=CGFloat.random(in:floor.position.y..<frame.height)
+        watermelon.position.x = 70
+        watermelon.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
         watermelon.name="Watermelon"
         watermelon.physicsBody=SKPhysicsBody(circleOfRadius:25)
         watermelon.physicsBody?.affectedByGravity=false
@@ -177,6 +219,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func ScreenHasBeenPressed() -> Bool {
         return screenTouched
     }
+    
     func CheckPlayerSpeed(){
         if player.physicsBody?.velocity.dy==0{
             isJumping=false
@@ -200,9 +243,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func createObstacle(){
-        let randomNumber:CGFloat=CGFloat.random(in:1..<3).rounded()
+
+        let randomNumber: Int = Int.random(in:1..<3)
         obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
-        obstacle.position = CGPoint(x: 200, y: -35)  // Impgosta la posizione del pavimento
+        obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
+
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
         obstacle.physicsBody?.affectedByGravity=false
         obstacle.physicsBody?.categoryBitMask = 3
@@ -212,6 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(obstacle)
         obstacleCounter+=1
     }
+    
     func createScore(){
         scoreLabel = SKLabelNode(text:"\(Int(score))")
         scoreLabel.fontSize=70.0
@@ -220,6 +266,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.zPosition=7
         addChild(scoreLabel)
     }
+    
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
