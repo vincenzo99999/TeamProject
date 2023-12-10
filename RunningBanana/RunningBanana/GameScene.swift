@@ -34,6 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var floorHeight: CGFloat = 150
     weak var floorContactDelegate: FloorContactDelegate?
     var floor:SKSpriteNode!
+    var roadSprite: SKSpriteNode? = nil
     
     //Score
     var scoreLabel:SKLabelNode!
@@ -66,15 +67,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         parallaxLayerSprites?.append(middleTreeSprite)
         parallaxLayerSprites?.append(lightSprite)
         parallaxLayerSprites?.append(frontTreeSprite)
-    
         
-        parallax = Parallax(scene: self, parallaxLayerSprites: parallaxLayerSprites!, getSpritesFromFile: false)
         
         createFloor()
         createPlayer()
         createObstacle()
         createScore()
         createWatermelon()
+        
+        //Road
+        parallaxLayerSprites?.append(floor)
+        
+        parallax = Parallax(scene: self, parallaxLayerSprites: parallaxLayerSprites!, getSpritesFromFile: false)
     }
     
 
@@ -90,7 +94,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         CheckPlayerSpeed()
         updatePlayerSpeed()
         updateWatermelonPosition()
-        jump()
+        jump() //TODO fix jump
         updateScore()
         if isGameOver(){
             //add gameOverView()
@@ -125,8 +129,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.zPosition = 10
         addChild(player)
     }
+    
     func createFloor() {
-        floor = SKSpriteNode(color: .red, size: CGSize(width: size.width, height: 10))
+        floor = SKSpriteNode(color: .red, size: CGSize(width: scene!.size.width*3, height: floorHeight/2))
+        floor.name = "floor"
         floor.position = CGPoint(x: 0, y: -floorHeight)  // Imposta la posizione del pavimento
         floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
         floor.physicsBody?.affectedByGravity=false
@@ -135,10 +141,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.physicsBody?.contactTestBitMask = PhysicsCategory.player
         floor.physicsBody?.collisionBitMask = PhysicsCategory.player
         floor.physicsBody?.isDynamic = false  // Il pavimento non si muove
-        floor.zPosition=9
+        floor.zPosition=0
         
+        
+        
+        let roadInstancesNumber: Int = 4
+        let instanceWidth = (scene!.size.width*3)/CGFloat(roadInstancesNumber)
+        
+        for instance in 0...roadInstancesNumber{
+            
+            roadSprite = SKSpriteNode(imageNamed: "road")
+            roadSprite?.zPosition = 5
+            roadSprite?.size = CGSize(width: instanceWidth, height: (roadSprite?.size.height)! * 1.5)
+            
+            roadSprite?.position.x = (instanceWidth * CGFloat(instance)) - scene!.size.width/2
+            floor.addChild(roadSprite!)
+        }
         
         addChild(floor)
+        
+        
     }
     
     //TODO spawn watermelons outside the screen
