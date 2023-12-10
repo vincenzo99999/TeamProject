@@ -36,6 +36,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var startTime: TimeInterval? = nil
     var hasStartTimeBeenAssigned = false
     
+    //position and velocity
+    var posizionex: CGFloat = 1.4
+    var velocityuser: CGFloat = 0.5
+    
     
     
     override func sceneDidLoad() {
@@ -71,7 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             hasStartTimeBeenAssigned.toggle()
         }
         
-        parallax!.update(layers: parallaxLayerSprites!, speed: 0.5, speedFactor: 1.0);
+        parallax!.update(layers: parallaxLayerSprites!, speed: velocityuser, speedFactor: 0.8);
         updateObstaclePosition()
         CheckPlayerSpeed()
         updatePlayerSpeed()
@@ -83,7 +87,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func GameOver()->Bool{
-        if player.position.x<=frame.width||player.position.y<floor.position.y{
+        if player.position.x <= frame.width || player.position.y < floor.position.y{
             return true
         }
         else{
@@ -94,7 +98,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-        score=score+((player.physicsBody?.velocity.dx)! + CGFloat(obstacleCounter)) * 0.001
+        score = score+(velocityuser + CGFloat(obstacleCounter)) * 0.025
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -102,6 +106,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.name = "player"
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
         player.position = CGPoint(x: -50, y: 35)
+        
+        let xRange: SKRange = SKRange(lowerLimit: -frame.width, upperLimit: -50)
+        let xCostraint = SKConstraint.positionX(xRange)
+        player.constraints = [xCostraint]
+        
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
         player.physicsBody?.contactTestBitMask = PhysicsCategory.watermelon
@@ -143,8 +152,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     func updateWatermelonPosition(){
-        watermelon.position.x -= 1.4
-        if watermelon.position.x < -80{
+        watermelon.position.x -= posizionex
+        if watermelon.position.x < -frame.width - 30{
             if let node=watermelon{
                 node.removeFromParent()
                 createWatermelon()
@@ -160,7 +169,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func jump(){
         if ScreenHasBeenPressed(){
             if(!isJumping){
-                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
+                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
                 isJumping=true
             }
         }
@@ -174,16 +183,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func updatePlayerSpeed(){
-        if (player.physicsBody?.velocity.dx)!<0{
+        if (player.physicsBody?.velocity.dx)! < 0 {
             player.physicsBody?.velocity.dx = -(player.physicsBody?.velocity.dx)!
         }
-        player.physicsBody?.velocity.dx+=0.3
-        player.position.x = -50
-        
+        player.physicsBody?.velocity.dx += 0.3
     }
     func updateObstaclePosition(){
-        obstacle.position.x -= 1.4
-        if obstacle.position.x <= -300 {
+        obstacle.position.x -= posizionex
+        obstacle.physicsBody?.velocity.dx = -velocityuser * 1.2
+        if obstacle.position.x <= -frame.width - 10 {
             if let node=obstacle{
                 node.removeFromParent()
                 createObstacle()
@@ -192,14 +200,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func createObstacle(){
-        let randomNumber:CGFloat=CGFloat.random(in:1..<2).rounded()
+        let randomNumber:CGFloat=CGFloat.random(in:1..<3).rounded()
         obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
-        obstacle.position = CGPoint(x: 200, y: -35)  // Imposta la posizione del pavimento
+        obstacle.position = CGPoint(x: 200, y: -35)  // Impgosta la posizione del pavimento
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
         obstacle.physicsBody?.affectedByGravity=false
         obstacle.physicsBody?.categoryBitMask = 3
         obstacle.physicsBody?.isDynamic = true  // Il pavimento non si muove
         obstacle.zPosition=8
+        obstacle.physicsBody?.allowsRotation = false
         addChild(obstacle)
         obstacleCounter+=1
     }
