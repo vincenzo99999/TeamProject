@@ -1,4 +1,3 @@
-//
 //  GameScene.swift
 //  RunningBanana
 //
@@ -7,21 +6,34 @@
 
 import SpriteKit
 import GameplayKit
+import Foundation
+import SwiftUI
+
 struct PhysicsCategory{
-    static let none:UInt32 = 0
-    static let all :UInt32 = UInt32.max
-    static let player : UInt32 = 0b1
-    static let watermelon : UInt32 = 0b10
-    static let floor:UInt32=0b11
-    static let tank:UInt32=0b100
+    static let none: UInt32 = 0
+    static let all: UInt32 = UInt32.max
+    static let player: UInt32 = 0b1
+    static let watermelon: UInt32 = 0b10
+    static let floor:UInt32 = 0b11
+    static let tank:UInt32 = 0b100
 }
 protocol FloorContactDelegate: AnyObject {
     func playerDidContactFloor()
 }
 
+@Observable
+class Watermelons{
+    @ObservationIgnored
+    @AppStorage("watermelon") var watermelon: Int = 0
+}
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var watermelonCollected:UInt32=0
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @State var watermelonCollectedHandler: Watermelons
     var player:SKSpriteNode!
     var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
@@ -121,7 +133,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollected)) * 0.025
+        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollectedHandler.watermelon)) * 0.025
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -311,13 +323,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-            watermelonCollected+=1
+            watermelonCollectedHandler.watermelon+=1
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-            watermelonCollected+=1
+            watermelonCollectedHandler.watermelon+=1
             print("contatto rilevato")
         }
         if let node = firstBody.node, node.name == "tank" {
@@ -339,7 +351,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
     }
 }
-
-
-        
 
