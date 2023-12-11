@@ -29,11 +29,6 @@ class Watermelons{
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    @State var watermelonCollectedHandler: Watermelons
     var player:SKSpriteNode!
     var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
@@ -133,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollectedHandler.watermelon)) * 0.025
+        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(Watermelons().watermelon)) * 0.025
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -323,13 +318,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-            watermelonCollectedHandler.watermelon+=1
+            Watermelons().watermelon+=1
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-            watermelonCollectedHandler.watermelon+=1
+            Watermelons().watermelon+=1
             print("contatto rilevato")
         }
         if let node = firstBody.node, node.name == "tank" {
