@@ -21,7 +21,7 @@ protocol FloorContactDelegate: AnyObject {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    
+    var watermelonCollected:UInt32=0
     var player:SKSpriteNode!
     var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
@@ -121,7 +121,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter)) * 0.025
+        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollected)) * 0.025
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -129,11 +129,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.name = "player"
         player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
         player.position = CGPoint(x: -50, y: 35)
-        
         let xRange: SKRange = SKRange(lowerLimit: -frame.width, upperLimit: -50)
         let xCostraint = SKConstraint.positionX(xRange)
         player.constraints = [xCostraint]
-        
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
         player.physicsBody?.contactTestBitMask = PhysicsCategory.watermelon
@@ -290,15 +288,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createScore(){
         scoreLabel = SKLabelNode(text:"\(Int(score))")
-        scoreLabel.fontSize=70.0
-        scoreLabel.fontColor = .black
+        scoreLabel.fontSize=80.0
+        scoreLabel.fontColor = .yellow
+        
         scoreLabel.position=CGPoint(x: -70, y: 100)
         scoreLabel.zPosition=7
         addChild(scoreLabel)
     }
     func activateNitro(){
-        if tankCounter%10==0 && tankCounter != 0 {
-            player.physicsBody?.applyImpulse(CGVector(dx: 40, dy: 0))
+        if tankCounter%10 == 0{
+            player.physicsBody?.applyImpulse(CGVector(dx: 100   , dy: 0))
+            print(tankCounter)
+            print("Nitro attivato")
+            tankCounter=0
         }
     }
     
@@ -309,28 +311,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
+            watermelonCollected+=1
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
+            watermelonCollected+=1
             print("contatto rilevato")
         }
         if let node = firstBody.node, node.name == "tank" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
+            print(tankCounter)
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "tank" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
+            print(tankCounter)
             print("contatto rilevato")
         }
     }
-
-
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
     }
