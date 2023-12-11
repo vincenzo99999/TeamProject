@@ -21,21 +21,10 @@ protocol FloorContactDelegate: AnyObject {
     func playerDidContactFloor()
 }
 
-<<<<<<< HEAD
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
     var watermelonCollectedHandler:Int=0
-=======
-@Observable
-class Watermelons{
-    @ObservationIgnored
-    @AppStorage("watermelon") var watermelon: Int = 0
-}
-
-class GameScene: SKScene, SKPhysicsContactDelegate {
-    
->>>>>>> c4daa5dbea220722c584a4ca14a9e795e9436a41
     var player:SKSpriteNode!
     var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
@@ -139,11 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-<<<<<<< HEAD
         score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollectedHandler)) * 0.025
-=======
-        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(Watermelons().watermelon)) * 0.025
->>>>>>> c4daa5dbea220722c584a4ca14a9e795e9436a41
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -318,11 +303,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
     }
     func activateNitro(){
-<<<<<<< HEAD
         if tankCounter%10 == 0 && tankCounter != 0{
-=======
-        if tankCounter%10 == 0{
->>>>>>> c4daa5dbea220722c584a4ca14a9e795e9436a41
             player.physicsBody?.applyImpulse(CGVector(dx: 100   , dy: 0))
             print(tankCounter)
             print("Nitro attivato")
@@ -343,21 +324,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-<<<<<<< HEAD
             watermelonCollectedHandler+=1
-=======
-            Watermelons().watermelon+=1
->>>>>>> c4daa5dbea220722c584a4ca14a9e795e9436a41
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-<<<<<<< HEAD
             watermelonCollectedHandler+=1
-=======
-            Watermelons().watermelon+=1
->>>>>>> c4daa5dbea220722c584a4ca14a9e795e9436a41
             print("contatto rilevato")
         }
         if let node = firstBody.node, node.name == "tank" {
