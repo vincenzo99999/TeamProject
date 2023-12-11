@@ -17,6 +17,7 @@
 		54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7B2B1F607500BBE823 /* Main.storyboard */; };
 		54C6DD7F2B1F607600BBE823 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7E2B1F607600BBE823 /* Assets.xcassets */; };
 		54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD802B1F607600BBE823 /* LaunchScreen.storyboard */; };
+		851A6FA92B273FA8001F5CF3 /* GameOverPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FA82B273FA8001F5CF3 /* GameOverPopup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		54C6DD7C2B1F607500BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54C6DD7E2B1F607600BBE823 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54C6DD812B1F607600BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		851A6FA82B273FA8001F5CF3 /* GameOverPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverPopup.swift; path = ../../../../../Desktop/GameOverPopup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				54C6DD7B2B1F607500BBE823 /* Main.storyboard */,
 				54C6DD7E2B1F607600BBE823 /* Assets.xcassets */,
 				54C6DD802B1F607600BBE823 /* LaunchScreen.storyboard */,
+				851A6FA82B273FA8001F5CF3 /* GameOverPopup.swift */,
 			);
 			path = RunningBanana;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				851A6FA92B273FA8001F5CF3 /* GameOverPopup.swift in Sources */,
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
 				54C6DD7A2B1F607500BBE823 /* GameViewController.swift in Sources */,
 				4E6805142B23A28500E49679 /* Parallax.swift in Sources */,
