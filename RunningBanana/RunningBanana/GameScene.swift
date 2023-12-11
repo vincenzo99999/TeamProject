@@ -53,6 +53,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var posizionex: CGFloat = 1.4
     var velocityuser: CGFloat = 0.5
     
+    //TODO holes on the road
+    //TODO SpawnSystem
+    
     
     override func sceneDidLoad() {
         
@@ -82,17 +85,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Road
         parallaxLayerSprites?.append(floor)
         
-        parallax = Parallax(scene: self, parallaxLayerSprites: parallaxLayerSprites!, getSpritesFromFile: false)
+        parallax = Parallax(scene: self,
+                            parallaxLayerSprites: parallaxLayerSprites!,
+                            getSpritesFromFile: false,
+                            speed: velocityuser,
+                            speedFactor: 0.8)
     }
     
-
+    
     override func update(_ currentTime: TimeInterval) {
         if !hasStartTimeBeenAssigned {
             startTime = currentTime
             hasStartTimeBeenAssigned.toggle()
         }
         
-        parallax!.update(layers: parallaxLayerSprites!, speed: velocityuser, speedFactor: 0.8);
+        parallax!.update(layers: parallaxLayerSprites!);
 
         updateObstaclePosition()
         CheckPlayerSpeed()
@@ -287,8 +294,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
     }
+    
+    
+    
+    func spawn(sprite: SKSpriteNode, position: CGPoint){
+        sprite.position = position
+        addChild(sprite)
+    }
+    
+    
 }
-
-
-        
 
