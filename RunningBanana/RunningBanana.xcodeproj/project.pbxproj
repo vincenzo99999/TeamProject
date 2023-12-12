@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		4E6805122B2220C400E49679 /* MyScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E6805112B2220C400E49679 /* MyScene.sks */; };
 		4E6805142B23A28500E49679 /* Parallax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805132B23A28500E49679 /* Parallax.swift */; };
+		4E6805162B274CEF00E49679 /* Spawnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805152B274CEF00E49679 /* Spawnable.swift */; };
+		4E6805182B287F2A00E49679 /* Obstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805172B287F2A00E49679 /* Obstacle.swift */; };
+		4E68051A2B28843600E49679 /* Watermelon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805192B28843600E49679 /* Watermelon.swift */; };
+		543F92CC2B289E9B0054B289 /* Hole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543F92CB2B289E9B0054B289 /* Hole.swift */; };
+		543F92CE2B28A6CC0054B289 /* Tank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543F92CD2B28A6CC0054B289 /* Tank.swift */; };
 		54C6DD722B1F607500BBE823 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C6DD712B1F607500BBE823 /* AppDelegate.swift */; };
 		54C6DD742B1F607500BBE823 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD732B1F607500BBE823 /* GameScene.sks */; };
 		54C6DD762B1F607500BBE823 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD752B1F607500BBE823 /* Actions.sks */; };
@@ -17,11 +22,18 @@
 		54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7B2B1F607500BBE823 /* Main.storyboard */; };
 		54C6DD7F2B1F607600BBE823 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7E2B1F607600BBE823 /* Assets.xcassets */; };
 		54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD802B1F607600BBE823 /* LaunchScreen.storyboard */; };
+		850B7C1A2B28AD4400D3AE0F /* GameMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */; };
+		851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4E6805112B2220C400E49679 /* MyScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyScene.sks; sourceTree = "<group>"; };
 		4E6805132B23A28500E49679 /* Parallax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parallax.swift; sourceTree = SOURCE_ROOT; };
+		4E6805152B274CEF00E49679 /* Spawnable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spawnable.swift; sourceTree = "<group>"; };
+		4E6805172B287F2A00E49679 /* Obstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Obstacle.swift; sourceTree = "<group>"; };
+		4E6805192B28843600E49679 /* Watermelon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watermelon.swift; sourceTree = "<group>"; };
+		543F92CB2B289E9B0054B289 /* Hole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hole.swift; sourceTree = "<group>"; };
+		543F92CD2B28A6CC0054B289 /* Tank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tank.swift; sourceTree = "<group>"; };
 		54C6DD6E2B1F607500BBE823 /* RunningBanana.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunningBanana.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C6DD712B1F607500BBE823 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54C6DD732B1F607500BBE823 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -31,6 +43,8 @@
 		54C6DD7C2B1F607500BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54C6DD7E2B1F607600BBE823 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54C6DD812B1F607600BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuScene.swift; sourceTree = "<group>"; };
+		851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,11 +77,18 @@
 		54C6DD702B1F607500BBE823 /* RunningBanana */ = {
 			isa = PBXGroup;
 			children = (
+				543F92CB2B289E9B0054B289 /* Hole.swift */,
+				850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */,
 				54C6DD712B1F607500BBE823 /* AppDelegate.swift */,
 				54C6DD732B1F607500BBE823 /* GameScene.sks */,
 				4E6805112B2220C400E49679 /* MyScene.sks */,
 				54C6DD752B1F607500BBE823 /* Actions.sks */,
 				54C6DD772B1F607500BBE823 /* GameScene.swift */,
+				4E6805152B274CEF00E49679 /* Spawnable.swift */,
+				543F92CD2B28A6CC0054B289 /* Tank.swift */,
+				4E6805172B287F2A00E49679 /* Obstacle.swift */,
+				4E6805192B28843600E49679 /* Watermelon.swift */,
+				851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */,
 				4E6805132B23A28500E49679 /* Parallax.swift */,
 				54C6DD792B1F607500BBE823 /* GameViewController.swift */,
 				54C6DD7B2B1F607500BBE823 /* Main.storyboard */,
@@ -152,9 +173,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
+				851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */,
 				54C6DD7A2B1F607500BBE823 /* GameViewController.swift in Sources */,
+				4E6805182B287F2A00E49679 /* Obstacle.swift in Sources */,
+				543F92CC2B289E9B0054B289 /* Hole.swift in Sources */,
 				4E6805142B23A28500E49679 /* Parallax.swift in Sources */,
+				4E6805162B274CEF00E49679 /* Spawnable.swift in Sources */,
+				543F92CE2B28A6CC0054B289 /* Tank.swift in Sources */,
 				54C6DD722B1F607500BBE823 /* AppDelegate.swift in Sources */,
+				850B7C1A2B28AD4400D3AE0F /* GameMenuScene.swift in Sources */,
+				4E68051A2B28843600E49679 /* Watermelon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
