@@ -2,7 +2,7 @@
 //  RunningBanana
 //
 //  Created by Vincenzo Eboli on 05/12/23.
-//
+//  Code partially cleaned by Arturo - "I did what i could"
 
 import SpriteKit
 import GameplayKit
@@ -34,6 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Physics
     var isJumping:Bool=false
+    var worldGravity = -3.7
     
     //Floor
     var floorHeight: CGFloat = 150
@@ -59,23 +60,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var watermelonSpawn: Spawnable?
     var obstacleSpawn: Obstacle?
     var holeSpawn: Hole?
-    //TODO pass floor level to those
-    
+    var tankSpawn: Tank?
+        
     //Running Time
     var startTime: TimeInterval? = nil
     var hasStartTimeBeenAssigned = false
-    var timeElapsed: TimeInterval? = nil
+    var elapsedTime: TimeInterval? = nil
     
     //position and velocity
     var posizionex: CGFloat = 1.4
     var velocityuser: CGFloat = 1.0
     
     
-    var worldGravity = -3.7
     
     override func sceneDidLoad() {
         
+        //set anchor point
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        
+        //physics setup
         self.physicsWorld.gravity=CGVector(dx: 0, dy: worldGravity) //changed
         
         //get layers, somewhere
@@ -104,39 +107,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             getSpritesFromFile: false,
                             speed: velocityuser,
                             speedFactor: 0.8)
+        
+        //Spawnables must be created AFTER parallax
         createHole()
         createWatermelon()
         createObstacle()
         createTank()
     }
     
-    
+    //Called every frame
     override func update(_ currentTime: TimeInterval) {
+        //Get start time
         if !hasStartTimeBeenAssigned {
             startTime = currentTime
             hasStartTimeBeenAssigned.toggle()
         }
-        timeElapsed = elapsedTime(currentTime: currentTime)
+        elapsedTime = getElapsedTime(currentTime: currentTime)
         
+        //Updates every frame
         parallax!.update(layers: parallaxLayerSprites!);
-
-
-        updateObstaclePosition()
-        CheckPlayerSpeed()
-        updatePlayerSpeed()
-        updateWatermelonPosition()
+        
+        //Spawnables update
+        obstacleSpawn?.update()
+        watermelonSpawn?.update()
+        tankSpawn?.update()
+        holeSpawn?.update()
+        
+        CheckIfGrounded()
+        
+        //This is useless because we already speed up the world overtime
+        //updatePlayerSpeed()
+        
         updateScore()
-        updateTankPosition()
+        
+        //updateTankPosition() //TODO delete this function
+        
         activateNitro()
-        updateHolePosition()
+        
         // Check for game over
         if isGameOver() {
             showGameOverScene()
         }
     }
+    
+    
 
     func updateVelocityUser(){
-        velocityuser = velocityuser * timeElapsed! * 0.025
+        velocityuser = velocityuser * elapsedTime! * 0.025
     }
     
     func isGameOver()->Bool{
@@ -148,7 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return false
         }
     }
-    func elapsedTime(currentTime: TimeInterval) -> TimeInterval{
+    func getElapsedTime(currentTime: TimeInterval) -> TimeInterval{
         return currentTime - startTime!
     }
     func updateScore(){
@@ -255,15 +272,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacleCounter+=1
     }
     
-    func updateObstaclePosition(){
-        obstacleSpawn?.update()
-    }
-    
-    
-    
-    func updateWatermelonPosition(){
-        watermelonSpawn?.update()
-    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         jump()
     }
@@ -279,11 +287,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
 
-    func CheckPlayerSpeed(){
+    func CheckIfGrounded(){
         if player.physicsBody?.velocity.dy==0{
             isJumping=false
         }
     }
+    
+    //This creates problems
     func updatePlayerSpeed(){
         if (player.physicsBody?.velocity.dx)! < 0 {
             player.physicsBody?.velocity.dx = -(player.physicsBody?.velocity.dx)!
@@ -293,22 +303,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
   
   
       func createTank(){
-        tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
-        tank.position.x = 70
-        tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
-        tank.name="tank"
-        tank.physicsBody=SKPhysicsBody(circleOfRadius:25)
-        tank.physicsBody?.affectedByGravity=false
-        tank.physicsBody?.categoryBitMask=5
-        tank.physicsBody?.contactTestBitMask = 5
-        tank.physicsBody?.isDynamic=false
-        tank.zPosition=11
-        tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
+          tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
+          tank.position.x = 70
+          tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+          tank.name="tank"
+          tank.physicsBody=SKPhysicsBody(circleOfRadius:25)
+          tank.physicsBody?.affectedByGravity=false
+          tank.physicsBody?.categoryBitMask=5
+          tank.physicsBody?.contactTestBitMask = 5
+          tank.physicsBody?.isDynamic=false
+          tank.zPosition=12
+          tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
+          tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
+          tank.physicsBody?.collisionBitMask = PhysicsCategory.player
+          
+          let horizontalPosition = (scene?.frame.width)! + tank.size.width
+          let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+          
+          tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
+          tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation))
         
-        tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        tank.physicsBody?.collisionBitMask = PhysicsCategory.player
-        
-        addChild(tank)
     }
   
   
@@ -370,6 +384,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         gameOverScene.scaleMode = scaleMode
         view?.presentScene(gameOverScene)
     }
+    
 
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
@@ -406,6 +421,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "obstacle" && secondBody.node?.name == "player"{
             player.position.x -= velocityuser
         }
+        
+        
         if let node = secondBody.node, node.name == "hole" && firstBody.node?.name == "player"{
             showGameOverScene()
         }
