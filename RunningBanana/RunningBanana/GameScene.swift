@@ -21,19 +21,10 @@ protocol FloorContactDelegate: AnyObject {
     func playerDidContactFloor()
 }
 
-@Observable
-class Watermelons{
-    @ObservationIgnored
-    @AppStorage("watermelon") var watermelon: Int = 0
-}
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    @State var watermelonCollectedHandler: Watermelons
+
+    var watermelonCollectedHandler:Int=0
     var player:SKSpriteNode!
     var tank:SKSpriteNode!
     var obstacle:SKSpriteNode!
@@ -65,7 +56,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //position and velocity
     var posizionex: CGFloat = 1.4
     var velocityuser: CGFloat = 0.5
-    
+
+
     
     override func sceneDidLoad() {
         
@@ -104,25 +96,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             startTime = currentTime
             hasStartTimeBeenAssigned.toggle()
         }
-        
+
         parallax!.update(layers: parallaxLayerSprites!, speed: velocityuser, speedFactor: 0.8);
 
         updateObstaclePosition()
         CheckPlayerSpeed()
         updatePlayerSpeed()
         updateWatermelonPosition()
-        jump() //TODO fix jump
+        jump() // TODO: fix jump
         updateScore()
         updateTankPosition()
         activateNitro()
-        if isGameOver(){
-            //add gameOverView()
+        
+        // Check for game over
+        if isGameOver() {
+            showGameOverScene()
         }
     }
 
+
     func isGameOver()->Bool{
 
-        if player.position.x <= frame.width || player.position.y < floor.position.y{
+        if player.position.x <= -frame.width || player.position.y < floor.position.y{
             return true
         }
         else{
@@ -133,7 +128,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollectedHandler.watermelon)) * 0.025
+        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollectedHandler)) * 0.025
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -308,14 +303,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(scoreLabel)
     }
     func activateNitro(){
-        if tankCounter%10 == 0{
+        if tankCounter%10 == 0 && tankCounter != 0{
             player.physicsBody?.applyImpulse(CGVector(dx: 100   , dy: 0))
             print(tankCounter)
             print("Nitro attivato")
             tankCounter=0
         }
     }
-    
+
+    func showGameOverScene() {
+        let gameOverScene = GameOverScene(size: size, score: Int(score), watermelonCollected: obstacleCounter)
+        gameOverScene.scaleMode = scaleMode
+        view?.presentScene(gameOverScene)
+    }
+
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
@@ -323,13 +324,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-            watermelonCollectedHandler.watermelon+=1
+            watermelonCollectedHandler+=1
             print("contatto rilevato")
         }
         if let node = secondBody.node, node.name == "Watermelon" {
             node.removeFromParent()
             createWatermelon()
-            watermelonCollectedHandler.watermelon+=1
+            watermelonCollectedHandler+=1
             print("contatto rilevato")
         }
         if let node = firstBody.node, node.name == "tank" {
