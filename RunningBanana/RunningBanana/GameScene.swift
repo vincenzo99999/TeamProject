@@ -25,14 +25,14 @@ protocol FloorContactDelegate: AnyObject {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
 
-    var watermelonCollectedHandler:Int=0
     var player:SKSpriteNode!
-    var tank:SKSpriteNode!
-    var obstacle:SKSpriteNode!
+    
+    //Counters
     var obstacleCounter:Int=0
     var tankCounter:Int=0
-    var hole:SKSpriteNode!
-    var screenTouched:Bool=false
+    var watermelonCollectedHandler:Int=0
+    
+    //Physics
     var isJumping:Bool=false
     
     //Floor
@@ -49,9 +49,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var parallaxLayerSprites: [SKSpriteNode?]? = []
     var parallax: Parallax? = nil
     
-    
+    //Spawnables
     var watermelon:SKSpriteNode!
-    
+    var obstacle:SKSpriteNode!
+    var hole:SKSpriteNode!
+    var tank:SKSpriteNode!
     
     //Spawn
     var watermelonSpawn: Spawnable?
@@ -67,10 +69,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //position and velocity
     var posizionex: CGFloat = 1.4
     var velocityuser: CGFloat = 1.0
+    
+    
+    var worldGravity = -3.7
+    
     override func sceneDidLoad() {
         
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        self.physicsWorld.gravity=CGVector(dx: 0, dy: -2)
+        self.physicsWorld.gravity=CGVector(dx: 0, dy: worldGravity) //changed
         
         //get layers, somewhere
         let backTreeSprite = childNode(withName: "backTreeSprite") as! SKSpriteNode?
@@ -89,6 +95,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createFloor()
         createPlayer()
         createScore()
+        
         //Road
         parallaxLayerSprites?.append(floor)
         
@@ -118,7 +125,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         CheckPlayerSpeed()
         updatePlayerSpeed()
         updateWatermelonPosition()
-        jump() // TODO: fix jump
         updateScore()
         updateTankPosition()
         activateNitro()
@@ -146,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return currentTime - startTime!
     }
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter)+CGFloat(watermelonCollectedHandler)) * 0.025
+        score = score+(velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
@@ -259,23 +265,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelonSpawn?.update()
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        screenTouched = true
+        jump()
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        screenTouched = false
-    }
-    func jump(){
-        if ScreenHasBeenPressed(){
-            if(!isJumping){
-                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
-                isJumping=true
-            }
-        }
-    }
-    func ScreenHasBeenPressed() -> Bool {
-        return screenTouched
+        
     }
     
+    func jump(){
+        if(!isJumping){
+            self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+            isJumping=true
+        }
+        
+    }
+
     func CheckPlayerSpeed(){
         if player.physicsBody?.velocity.dy==0{
             isJumping=false
@@ -342,7 +345,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hole.position.x = 70
         hole.name="hole"
         hole.size=CGSize(width: hole.size.width/6, height: hole.size.height/6)
-        hole.physicsBody=SKPhysicsBody(rectangleOf: CGSize(width: hole.size.width, height:hole.size.height))
+        hole.physicsBody=SKPhysicsBody(rectangleOf: CGSize(width: hole.size.width/3, height:hole.size.height))
         hole.physicsBody?.affectedByGravity=false
         hole.physicsBody?.isDynamic=false
         hole.physicsBody?.categoryBitMask=6
