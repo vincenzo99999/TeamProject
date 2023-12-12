@@ -357,7 +357,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let horizontalPosition = (scene?.frame.width)! + hole.size.width
         let elevation = floor.position.y-200
         
-        holeSpawn = Hole(scene: self, sprite: hole, parallax: parallax!)
+        holeSpawn = Hole(scene: self, sprite: hole, parallax: parallax!, floorHeight: floorHeight)
         holeSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
     
