@@ -267,7 +267,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func jump(){
         if ScreenHasBeenPressed(){
             if(!isJumping){
-                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+                self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
                 isJumping=true
             }
         }
@@ -324,7 +324,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.fontSize=80.0
         scoreLabel.fontColor = .yellow
         
-        scoreLabel.position=CGPoint(x: -70, y: 100)
+        scoreLabel.position=CGPoint(x:0, y: 100)
         scoreLabel.zPosition=12
         addChild(scoreLabel)
     }
@@ -374,15 +374,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
             node.removeFromParent()
-            //createWatermelon()
             watermelonCollectedHandler+=1
-            print("contatto rilevato")
+            print(watermelonCollectedHandler)
         }
         if let node = secondBody.node, node.name == "Watermelon" && firstBody.node?.name=="player" {
             node.removeFromParent()
-            //createWatermelon()
             watermelonCollectedHandler+=1
-            print("contatto rilevato")
+            print(watermelonCollectedHandler)
         }
         if let node = firstBody.node, node.name == "tank" && secondBody.node?.name=="player" {
             node.removeFromParent()
