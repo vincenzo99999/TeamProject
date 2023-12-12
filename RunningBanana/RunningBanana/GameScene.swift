@@ -150,9 +150,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.text = "\(Int(score))"
     }
     func createPlayer() {
-        self.player = SKSpriteNode(color: .blue, size: CGSize(width: 50, height: 50))
+        self.player = SKSpriteNode(imageNamed: "treruote")
         player.name = "player"
-        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 50, height: 50))
+        player.size = CGSize(width: player.size.width/2, height: player.size.height/2)
+        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+        player.physicsBody?.mass = 0.1
         player.position = CGPoint(x: -50, y: 35)
         let xRange: SKRange = SKRange(lowerLimit: -frame.width, upperLimit: -50)
         let xCostraint = SKConstraint.positionX(xRange)
