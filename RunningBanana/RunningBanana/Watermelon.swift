@@ -9,7 +9,6 @@ import Foundation
 import SpriteKit
 
 class Watermelon: Spawnable{
-    var floorHeight = 150.0
     
     override func Respawn() {
         

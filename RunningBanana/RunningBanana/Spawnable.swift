@@ -13,12 +13,13 @@ class Spawnable{
     
     var scene: SKScene
     var sprite: SKSpriteNode
-    
+    var floorHeight: CGFloat
     var parallaxLastLayerSpeed: CGFloat
     
-    init(scene: SKScene, sprite: SKSpriteNode, parallax: Parallax) {
+    init(scene: SKScene, sprite: SKSpriteNode, parallax: Parallax, floorHeight: CGFloat) {
         self.scene = scene
         self.sprite = sprite
+        self.floorHeight = floorHeight
         self.parallaxLastLayerSpeed = parallax.speed + (CGFloat(parallax.parallaxLayerSprites.count-1) * parallax.speedFactor)
     }
     
