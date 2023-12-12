@@ -9,10 +9,7 @@ import Foundation
 import SpriteKit
 
 class Obstacle: Spawnable{
-    var floorHeight: CGFloat = 150.0
-    
-    
-    
+        
     override func Respawn() {
         let randomNumber: Int = Int.random(in:1..<3)
         

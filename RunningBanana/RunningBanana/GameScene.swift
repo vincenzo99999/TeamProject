@@ -227,7 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let horizontalPosition = (scene?.frame.width)! + watermelon.size.width
         let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
         
-        watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!)
+        watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!, floorHeight: floorHeight)
         watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
     
@@ -249,7 +249,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let horizontalPosition = (scene?.frame.width)! + obstacle.size.width
         let elevation = -floorHeight + 1
         
-        obstacleSpawn = Obstacle(scene: self, sprite: obstacle, parallax: parallax!)
+        obstacleSpawn = Obstacle(scene: self, sprite: obstacle, parallax: parallax!, floorHeight: floorHeight)
         obstacleSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
         
         obstacleCounter+=1
