@@ -12,25 +12,30 @@ class Spawnable{
     //If an object is spawnable, it follows the last layer of the parallax
     
     var scene: SKScene
-    var speed: CGFloat
     var sprite: SKSpriteNode
     
     var parallaxLastLayerSpeed: CGFloat
     
-    init(scene: SKScene, speed: CGFloat, sprite: SKSpriteNode, spawnPosition: CGPoint, parallax: Parallax) {
+    init(scene: SKScene, sprite: SKSpriteNode, parallax: Parallax) {
         self.scene = scene
-        self.speed = speed
         self.sprite = sprite
         self.parallaxLastLayerSpeed = parallax.speed + (CGFloat(parallax.parallaxLayerSprites.count-1) * parallax.speedFactor)
-        
-        sprite.position = spawnPosition
     }
     
     func update(){
-        sprite.position.x -= speed
+        sprite.position.x -= parallaxLastLayerSpeed
+        //print("\(String(describing: sprite.name)) position: \(sprite.position.x)")
+        
         //if completely outside the screen
-        if sprite.position.x < (scene.frame.width + sprite.size.width){
+        if sprite.position.x < -(scene.size.width/2 + sprite.size.width){
             sprite.removeFromParent()
+            print("\(String(describing: sprite.name)) removed")
+            //Respawn probability
+            if Int.random(in: 0...100) <= 3 {
+                //spawn(spawnPosition: nextSpawnPosition)
+                Respawn()
+            }
+            
         }
     }
     
@@ -38,7 +43,11 @@ class Spawnable{
         sprite.position = spawnPosition
         scene.addChild(sprite)
     }
-
+    
+    
+    func Respawn(){
+        print("override the Respawn method")
+    }
     
     
 }
