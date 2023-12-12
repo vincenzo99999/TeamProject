@@ -12,10 +12,14 @@ class Parallax{
     
     var scene: SKScene
     var parallaxLayerSprites: [SKSpriteNode?]
+    var speed: CGFloat
+    var speedFactor: CGFloat
     
-    init(scene: SKScene, parallaxLayerSprites: [SKSpriteNode?], getSpritesFromFile: Bool) {
+    init(scene: SKScene, parallaxLayerSprites: [SKSpriteNode?], getSpritesFromFile: Bool, speed: CGFloat, speedFactor: CGFloat) {
         self.scene = scene
         self.parallaxLayerSprites = parallaxLayerSprites
+        self.speed = speed
+        self.speedFactor = speedFactor
         for (index,layer) in parallaxLayerSprites.enumerated(){
             createBackground(parent: layer!,zPosition: CGFloat(index), getSpritesFromFile: getSpritesFromFile)
         }
@@ -40,7 +44,7 @@ class Parallax{
 
 
     /*To get scrolling background*/
-    func update(layers: [SKSpriteNode?], speed: CGFloat, speedFactor: CGFloat){
+    func update(layers: [SKSpriteNode?]){
         //get the layers in the array but with opposite indexes
         for (index, layer) in layers.enumerated() {
             parallaxLayer(layer: layer, speed: speed + (CGFloat(index) * speedFactor))

@@ -47,7 +47,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //Parallax Array
     var parallaxLayerSprites: [SKSpriteNode?]? = []
     var parallax: Parallax? = nil
+    
+    
     var watermelon:SKSpriteNode!
+    
+    
+    //Spawn
+    var watermelonSpawn: Spawnable?
+    var obstacleSpawn: Obstacle?
+    //TODO pass floor level to those
     
     //Running Time
     var startTime: TimeInterval? = nil
@@ -55,10 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //position and velocity
     var posizionex: CGFloat = 1.4
-    var velocityuser: CGFloat = 0.5
-
-
-    
+    var velocityuser: CGFloat = 0.5    
     override func sceneDidLoad() {
         
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -80,24 +85,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         createFloor()
         createPlayer()
-        createObstacle()
         createScore()
-        createWatermelon()
-        createTank()
         //Road
         parallaxLayerSprites?.append(floor)
         
-        parallax = Parallax(scene: self, parallaxLayerSprites: parallaxLayerSprites!, getSpritesFromFile: false)
+        parallax = Parallax(scene: self,
+                            parallaxLayerSprites: parallaxLayerSprites!,
+                            getSpritesFromFile: false,
+                            speed: velocityuser,
+                            speedFactor: 0.8)
+        createWatermelon()
+        createObstacle()
+        createTank()
     }
     
-
+    
     override func update(_ currentTime: TimeInterval) {
         if !hasStartTimeBeenAssigned {
             startTime = currentTime
             hasStartTimeBeenAssigned.toggle()
         }
+        
+        parallax!.update(layers: parallaxLayerSprites!);
 
-        parallax!.update(layers: parallaxLayerSprites!, speed: velocityuser, speedFactor: 0.8);
 
         updateObstaclePosition()
         CheckPlayerSpeed()
@@ -163,7 +173,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.zPosition=0
         
         
-        
         let roadInstancesNumber: Int = 4
         let instanceWidth = (scene!.size.width*3)/CGFloat(roadInstancesNumber)
         
@@ -186,29 +195,57 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createWatermelon(){
         watermelon=SKSpriteNode(color: .green, size: CGSize(width: 25, height: 25))
         watermelon.position.x = 70
-        watermelon.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
         watermelon.name="Watermelon"
+        
         watermelon.physicsBody=SKPhysicsBody(circleOfRadius:25)
         watermelon.physicsBody?.affectedByGravity=false
+        watermelon.physicsBody?.isDynamic=true
         watermelon.physicsBody?.categoryBitMask=4
         watermelon.physicsBody?.contactTestBitMask = 4
-        watermelon.physicsBody?.isDynamic=true
         watermelon.zPosition=11
         watermelon.physicsBody?.categoryBitMask = PhysicsCategory.watermelon
         watermelon.physicsBody?.contactTestBitMask = PhysicsCategory.player
         watermelon.physicsBody?.collisionBitMask = PhysicsCategory.player
         
-        addChild(watermelon)
+        let horizontalPosition = (scene?.frame.width)! + watermelon.size.width
+        let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
         
+        watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!)
+        watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
+    
+    func createObstacle(){
+        
+        let randomNumber: Int = Int.random(in:1..<3)
+        obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
+        //obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
+        
+        obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
+        obstacle.physicsBody?.affectedByGravity=false
+        obstacle.physicsBody?.categoryBitMask = 3
+        obstacle.physicsBody?.isDynamic = true  // Il pavimento non si muove
+        obstacle.zPosition=8
+        obstacle.physicsBody?.allowsRotation = false
+        
+        //addChild(obstacle)
+        
+        let horizontalPosition = (scene?.frame.width)! + obstacle.size.width
+        let elevation = -floorHeight + 1
+        
+        obstacleSpawn = Obstacle(scene: self, sprite: obstacle, parallax: parallax!)
+        obstacleSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        
+        obstacleCounter+=1
+    }
+    
+    func updateObstaclePosition(){
+        obstacleSpawn?.update()
+    }
+    
+    
+    
     func updateWatermelonPosition(){
-        watermelon.position.x -= posizionex
-        if watermelon.position.x < -frame.width - 30{
-            if let node=watermelon{
-                node.removeFromParent()
-                createWatermelon()
-            }
-        }
+        watermelonSpawn?.update()
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         screenTouched = true
@@ -239,18 +276,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         player.physicsBody?.velocity.dx += 0.3
     }
-    func updateObstaclePosition(){
-        obstacle.position.x -= posizionex
-        obstacle.physicsBody?.velocity.dx = -velocityuser * 1.2
-        if obstacle.position.x <= -frame.width - 10 {
-            if let node=obstacle{
-                node.removeFromParent()
-                createObstacle()
-                print("obstacle was removed")
-            }
-        }
-    }
-    func createTank(){
+  
+  
+      func createTank(){
         tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
         tank.position.x = 70
         tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
@@ -268,6 +296,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(tank)
     }
+  
+  
     func updateTankPosition(){
         tank.position.x -= posizionex
         if tank.position.x < -frame.width - 30{
@@ -277,22 +307,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-    func createObstacle(){
 
-        let randomNumber: Int = Int.random(in:1..<3)
-        obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
-        obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
-
-        obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
-        obstacle.physicsBody?.affectedByGravity=false
-        obstacle.physicsBody?.categoryBitMask = 3
-        obstacle.physicsBody?.isDynamic = true  // Il pavimento non si muove
-        obstacle.zPosition=8
-        obstacle.physicsBody?.allowsRotation = false
-        addChild(obstacle)
-        obstacleCounter+=1
-    }
-    
     func createScore(){
         scoreLabel = SKLabelNode(text:"\(Int(score))")
         scoreLabel.fontSize=80.0
@@ -321,15 +336,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
 
-        if let node = firstBody.node, node.name == "Watermelon" {
+        if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
             node.removeFromParent()
-            createWatermelon()
+            //createWatermelon()
             watermelonCollectedHandler+=1
             print("contatto rilevato")
         }
-        if let node = secondBody.node, node.name == "Watermelon" {
+        if let node = secondBody.node, node.name == "Watermelon" && firstBody.node?.name=="player" {
             node.removeFromParent()
-            createWatermelon()
+            //createWatermelon()
             watermelonCollectedHandler+=1
             print("contatto rilevato")
         }
@@ -345,11 +360,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             tankCounter+=1
             createTank()
             print(tankCounter)
+
             print("contatto rilevato")
         }
     }
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
     }
+    
+    
 }
 
