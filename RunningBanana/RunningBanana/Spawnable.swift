@@ -31,7 +31,7 @@ class Spawnable{
             sprite.removeFromParent()
             print("\(String(describing: sprite.name)) removed")
             //Respawn probability
-            if Int.random(in: 0...100) <= 3 {
+            if Int.random(in: 0...100) <= 10 {
                 //spawn(spawnPosition: nextSpawnPosition)
                 Respawn()
             }

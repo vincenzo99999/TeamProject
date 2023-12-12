@@ -60,10 +60,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //Running Time
     var startTime: TimeInterval? = nil
     var hasStartTimeBeenAssigned = false
+    var timeElapsed: TimeInterval? = nil
     
     //position and velocity
     var posizionex: CGFloat = 1.4
-    var velocityuser: CGFloat = 0.5    
+    var velocityuser: CGFloat = 1.0
     override func sceneDidLoad() {
         
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -105,6 +106,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             startTime = currentTime
             hasStartTimeBeenAssigned.toggle()
         }
+        timeElapsed = elapsedTime(currentTime: currentTime)
         
         parallax!.update(layers: parallaxLayerSprites!);
 
@@ -124,10 +126,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-
+    func updateVelocityUser(){
+        velocityuser = velocityuser * timeElapsed! * 0.025
+    }
+    
     func isGameOver()->Bool{
 
-        if player.position.x <= -frame.width || player.position.y < floor.position.y{
+        if player.position.x <= -(scene?.size.width)! / 2 || player.position.y < floor.position.y{
             return true
         }
         else{
@@ -150,6 +155,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let xCostraint = SKConstraint.positionX(xRange)
         player.constraints = [xCostraint]
         player.physicsBody?.affectedByGravity = true
+        player.physicsBody?.isDynamic=true
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
         player.physicsBody?.contactTestBitMask = PhysicsCategory.watermelon
         player.physicsBody?.collisionBitMask = PhysicsCategory.watermelon | PhysicsCategory.floor
@@ -314,7 +320,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.fontColor = .yellow
         
         scoreLabel.position=CGPoint(x: -70, y: 100)
-        scoreLabel.zPosition=7
+        scoreLabel.zPosition=12
         addChild(scoreLabel)
     }
     func activateNitro(){
@@ -335,7 +341,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
-
+        
         if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
             node.removeFromParent()
             //createWatermelon()
@@ -348,20 +354,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             watermelonCollectedHandler+=1
             print("contatto rilevato")
         }
-        if let node = firstBody.node, node.name == "tank" {
+        if let node = firstBody.node, node.name == "tank" && secondBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
             print(tankCounter)
             print("contatto rilevato")
         }
-        if let node = secondBody.node, node.name == "tank" {
+        if let node = secondBody.node, node.name == "tank" && firstBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
             print(tankCounter)
-
+            
             print("contatto rilevato")
+        }
+        if let node = secondBody.node, node.name == "obstacle" && firstBody.node?.name == "player"{
+            player.position.x -= velocityuser
+        }
+        if let node = firstBody.node, node.name == "obstacle" && secondBody.node?.name == "player"{
+            player.position.x -= velocityuser
         }
     }
     override func didMove(to view: SKView) {
