@@ -20,6 +20,7 @@
 		54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7B2B1F607500BBE823 /* Main.storyboard */; };
 		54C6DD7F2B1F607600BBE823 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD7E2B1F607600BBE823 /* Assets.xcassets */; };
 		54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54C6DD802B1F607600BBE823 /* LaunchScreen.storyboard */; };
+		851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		54C6DD7C2B1F607500BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54C6DD7E2B1F607600BBE823 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54C6DD812B1F607600BBE823 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,9 +76,12 @@
 				4E6805112B2220C400E49679 /* MyScene.sks */,
 				54C6DD752B1F607500BBE823 /* Actions.sks */,
 				54C6DD772B1F607500BBE823 /* GameScene.swift */,
+
 				4E6805152B274CEF00E49679 /* Spawnable.swift */,
 				4E6805172B287F2A00E49679 /* Obstacle.swift */,
 				4E6805192B28843600E49679 /* Watermelon.swift */,
+				851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */,
+
 				4E6805132B23A28500E49679 /* Parallax.swift */,
 				54C6DD792B1F607500BBE823 /* GameViewController.swift */,
 				54C6DD7B2B1F607500BBE823 /* Main.storyboard */,
@@ -161,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
+				851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */,
 				54C6DD7A2B1F607500BBE823 /* GameViewController.swift in Sources */,
 				4E6805182B287F2A00E49679 /* Obstacle.swift in Sources */,
 				4E6805142B23A28500E49679 /* Parallax.swift in Sources */,
