@@ -11,7 +11,16 @@ import SpriteKit
 class GameMenuScene: SKScene {
 
     override func didMove(to view: SKView) {
+        setupBackground()
         setupUI()
+    }
+
+    private func setupBackground() {
+        let backgroundImage = SKSpriteNode(imageNamed: "backgroundImage") //cambiare il nome qui se necessario 
+        backgroundImage.position = CGPoint(x: frame.midX, y: frame.midY) //DOVREBBE essere centrata
+        backgroundImage.zPosition = -1 //lascia a -1
+        backgroundImage.size = self.frame.size
+        addChild(backgroundImage)
     }
 
     func setupUI() {
@@ -41,10 +50,10 @@ class GameMenuScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-
+        
         let location = touch.location(in: self)
         let touchedNodes = nodes(at: location)
-
+        
         for node in touchedNodes {
             if node.name == "play" {
                 startGame()
@@ -52,13 +61,24 @@ class GameMenuScene: SKScene {
                 showShop()
             } else if node.name == "leaderboard" {
                 showLeaderboard()
+                
+                if node.name == "back" {
+                    goToMainMenu()
+                }
             }
+        }
+    }
+    private func goToMainMenu() {
+        if let skView = self.view as? SKView {
+            let scene = GameMenuScene(size: skView.bounds.size)
+            scene.scaleMode = .aspectFill
+            skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
         }
     }
 
 
     private func startGame() {
-        if let skView = self.view as? SKView {
+        if let skView = self.view as? SKView { //non guardare sti warning, fai finta di nulla >_>
             if let scene = GameScene(fileNamed: "GameScene") {
                 scene.scaleMode = .aspectFill
                 skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
@@ -67,7 +87,7 @@ class GameMenuScene: SKScene {
     }
 
     private func showShop() {
-        // This is just a mock-up for the shop. You can replace this with your actual shop logic.
+        //hOI!!! i'm TEMMIE!!
         let shopLabel = SKLabelNode(text: "Shop Coming Soon!")
         shopLabel.fontSize = 40
         shopLabel.position = CGPoint(x: frame.midX, y: frame.midY)
@@ -75,7 +95,7 @@ class GameMenuScene: SKScene {
         addChild(shopLabel)
     }
     private func showLeaderboard() {
-        if let skView = self.view as? SKView {
+        if let skView = self.view as? SKView { //non guardare sti warning, fai finta di nulla >_>
             let scene = LeaderboardScene(size: skView.bounds.size)
             scene.scaleMode = .aspectFill
             skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
@@ -83,7 +103,7 @@ class GameMenuScene: SKScene {
     }
     
     private func goToMenu() {
-        if let skView = self.view as? SKView {
+        if let skView = self.view as? SKView { //non guardare sti warning, fai finta di nulla >_>
             let scene = GameMenuScene(size: skView.bounds.size)
             scene.scaleMode = .aspectFill
             skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))

@@ -9,6 +9,8 @@
 // Inside GameOverScene.swift
 
 import SpriteKit
+import UIKit
+import Foundation
 
 class GameOverScene: SKScene {
     var score: Int = 0
@@ -46,20 +48,32 @@ class GameOverScene: SKScene {
         playAgainButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
         playAgainButton.name = "playAgain"
         addChild(playAgainButton)
+        
+        let enterNameButton = SKLabelNode(text: "Enter Name")
+        enterNameButton.fontSize = 30.0
+        enterNameButton.position = CGPoint(x: frame.midX, y: frame.midY - 150)
+        enterNameButton.name = "enterName"
+        addChild(enterNameButton)
     }
-
-    //  NON MODIFICATE PLS. TROPPE LACRIME SONO STATE VERSATE IN QUESTO PUNTO DEL CODICE PORCACCIO DI [INSERIRE NOME ENTITA SUPERIORE]
 
     func restartGame() {
         if let skView = self.view as? SKView {
             if let scene = GameScene(fileNamed: "GameScene") {
-                scene.scaleMode = .aspectFill
-
+                scene.scaleMode = SKSceneScaleMode.aspectFill
                 skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
             }
         }
     }
 
+    func askForName() {
+        if let skView = self.view as? SKView {
+            let enterNameScene = EnterNameScene(size: skView.bounds.size)
+            enterNameScene.scaleMode = SKSceneScaleMode.aspectFill
+            enterNameScene.score = score
+            enterNameScene.watermelonCollected = watermelonCollected
+            skView.presentScene(enterNameScene, transition: SKTransition.fade(withDuration: 0.5))
+        }
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -70,8 +84,9 @@ class GameOverScene: SKScene {
         for node in touchedNodes {
             if node.name == "playAgain" {
                 restartGame()
+            } else if node.name == "enterName" {
+                askForName()
             }
         }
     }
 }
-
