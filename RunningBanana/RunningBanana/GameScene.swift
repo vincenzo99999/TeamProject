@@ -8,6 +8,7 @@ import SpriteKit
 import GameplayKit
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct PhysicsCategory{
     static let none: UInt32 = 0
@@ -252,7 +253,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelon.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         let horizontalPosition = (scene?.frame.width)! + watermelon.size.width
-        let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        let elevation = CGFloat.random(in: -(floorHeight + 50.0)..<((scene?.size.height)!/5))
         
         watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!, floorHeight: floorHeight)
         watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation+20))
@@ -321,7 +322,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
         
         let horizontalPosition = (scene?.frame.width)! + tank.size.width
-        let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        let elevation = CGFloat.random(in: -(floorHeight + 50.0)..<((scene?.size.height)!/5))
         
         tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
         tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation+20))
@@ -402,12 +403,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         countTouchTime = false
         touchingForSeconds = 0.0
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15.0))
     }
     
     func jump(){
         if(!isJumping){
             player.run(jumpRotation)
-            self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+            self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
             isJumping=true
         }
         
