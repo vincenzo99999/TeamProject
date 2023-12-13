@@ -8,6 +8,7 @@ import SpriteKit
 import GameplayKit
 import Foundation
 import SwiftUI
+import SwiftData
 
 struct PhysicsCategory{
     static let none: UInt32 = 0
@@ -402,12 +403,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         countTouchTime = false
         touchingForSeconds = 0.0
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -15.0))
     }
     
     func jump(){
         if(!isJumping){
             player.run(jumpRotation)
-            self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
+            self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
             isJumping=true
         }
         
@@ -499,4 +501,3 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
 }
-
