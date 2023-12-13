@@ -7,30 +7,15 @@
 
 import Foundation
 import SpriteKit
-import SwiftUI
-
-@Observable
-class Leaderboard {
-    @ObservationIgnored
-    @AppStorage("Leaderboard")
-    var leaderboard = "carlo: 1337, arturo: 99999, giovanni: 69, vincenzo: NaN"
-}
-
 
 class LeaderboardScene: SKScene {
 
-    @State var leaderboard: Leaderboard
-    
-
-    override init(){
-        self.leaderboard = leaderboard
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-  
+    var leaderboardEntries: [(name: String, score: Int)] = [
+        ("Giovanni", Int.random(in:1...2500)),
+        ("Arturo", Int.random(in:1...2500)),
+        ("Vincenzo", Int.random(in:1...2500)),
+        ("Carlo", Int.random(in:1...2500)),
+    ]
 
     override func didMove(to view: SKView) {
         leaderboardEntries = getSavedScores()
@@ -46,7 +31,6 @@ class LeaderboardScene: SKScene {
             return nil
         }.sorted { $0.score > $1.score }
     }
-
 
     func setupUI() {
         // IMMAGINE BACKGROUND LEADERBOARD
@@ -66,13 +50,13 @@ class LeaderboardScene: SKScene {
         // UGUALE A SOPRA MA INIZIALIZZA TUTTA LA ROBA
         for (index, entry) in leaderboardEntries.enumerated() {
             let entryLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
-            entryLabel.text = "\(entry.name): \(entry.score)"
+            entryLabel.text = "(entry.name): (entry.score)"
             entryLabel.fontSize = 30.0
             entryLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100 - CGFloat(index * 40))
             addChild(entryLabel)
         }
 
-        
+
         let backButton = SKLabelNode(fontNamed: "Helvetica-Bold")
         backButton.text = "Back"
         backButton.fontSize = 30.0
@@ -98,4 +82,3 @@ class LeaderboardScene: SKScene {
         }
     }
 }
-

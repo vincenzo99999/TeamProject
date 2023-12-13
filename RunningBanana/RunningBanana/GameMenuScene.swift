@@ -16,7 +16,7 @@ class GameMenuScene: SKScene {
     }
 
     private func setupBackground() {
-        let backgroundImage = SKSpriteNode(imageNamed: "backgroundImage") //cambiare il nome qui se necessario 
+        let backgroundImage = SKSpriteNode(imageNamed: "backgroundImage") //cambiare il nome qui se necessario
         backgroundImage.position = CGPoint(x: frame.midX, y: frame.midY) //DOVREBBE essere centrata
         backgroundImage.zPosition = -1 //lascia a -1
         backgroundImage.size = self.frame.size
