@@ -160,7 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Touch amount
         if(countTouchTime){
             touchingForSeconds = currentTime - elapsedTime!
-            print("Touch time \(touchingForSeconds)")
+            //print("Touch time \(touchingForSeconds)")
         }
         
         
