@@ -18,7 +18,18 @@ class LeaderboardScene: SKScene {
     ]
 
     override func didMove(to view: SKView) {
+        leaderboardEntries = getSavedScores()
         setupUI()
+    }
+
+    func getSavedScores() -> [(name: String, score: Int)] {
+        let savedScores = UserDefaults.standard.array(forKey: "leaderboard") as? [[String: Int]] ?? []
+        return savedScores.compactMap { dict in
+            if let name = dict.keys.first, let score = dict[name] {
+                return (name, score)
+            }
+            return nil
+        }.sorted { $0.score > $1.score }
     }
 
     func setupUI() {
@@ -50,8 +61,13 @@ class LeaderboardScene: SKScene {
 
         for node in touchedNodes {
             if node.name == "back" {
-                
+                if let skView = self.view as? SKView {
+                    let scene = GameMenuScene(size: skView.bounds.size) // Assuming you want to go back to the main menu
+                    scene.scaleMode = .aspectFill
+                    skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
+                }
             }
         }
     }
+
 }

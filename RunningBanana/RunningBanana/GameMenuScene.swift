@@ -50,10 +50,10 @@ class GameMenuScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-
+        
         let location = touch.location(in: self)
         let touchedNodes = nodes(at: location)
-
+        
         for node in touchedNodes {
             if node.name == "play" {
                 startGame()
@@ -61,7 +61,18 @@ class GameMenuScene: SKScene {
                 showShop()
             } else if node.name == "leaderboard" {
                 showLeaderboard()
+                
+                if node.name == "back" {
+                    goToMainMenu()
+                }
             }
+        }
+    }
+    private func goToMainMenu() {
+        if let skView = self.view as? SKView {
+            let scene = GameMenuScene(size: skView.bounds.size)
+            scene.scaleMode = .aspectFill
+            skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
         }
     }
 
