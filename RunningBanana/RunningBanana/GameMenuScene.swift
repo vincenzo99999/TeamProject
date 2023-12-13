@@ -51,10 +51,11 @@ class GameMenuScene: SKScene {
             } else if node.name == "shop" {
                 showShop()
             } else if node.name == "leaderboard" {
-                // Add logic to show the leaderboard
+                showLeaderboard()
             }
         }
     }
+
 
     private func startGame() {
         if let skView = self.view as? SKView {
@@ -73,4 +74,20 @@ class GameMenuScene: SKScene {
         shopLabel.name = "shopLabel"
         addChild(shopLabel)
     }
+    private func showLeaderboard() {
+        if let skView = self.view as? SKView {
+            let scene = LeaderboardScene(size: skView.bounds.size)
+            scene.scaleMode = .aspectFill
+            skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
+        }
+    }
+    
+    private func goToMenu() {
+        if let skView = self.view as? SKView {
+            let scene = GameMenuScene(size: skView.bounds.size)
+            scene.scaleMode = .aspectFill
+            skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
+        }
+    }
+
 }
