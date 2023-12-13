@@ -500,3 +500,60 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 }
 
+
+/*
+1 2 3 4 ...
+Ghi pour u'trerraut
+(Io guido l'apecar)
+U'trerraut ra piaogg
+(L'apecar della piaggio)
+M' scet i quaatt a mat'in
+(Mi alzo alle 4 del mattino)
+E quokk v'tt pur i quatt e diec
+(E a volte mi sveglio più tardi)
+Yee po vag' 'u mrcat
+(E poi vado al mercato)
+Yemm m carc i miluuun
+(E faccio il carico di cocomeri)
+Latu iuorno a casoria
+(L'altro ieri a casoria vicino Napoli)
+Seee skiattat na rauottt
+(Ho forato un pneumatico)
+Pi'kkè a strat fa skiff'
+(Perché il fondo stradale non è dei migliori)
+è ssè abbucat 'u treraut
+(E si è ribaltato l'apercar)
+E sso carut tutti i miluun
+(E sono caduti tutti i cocomeri)
+E mi so cacat soout
+(E io ho avuta molta molta paura)
+Ye a tutt' è makin ke passavn
+(E tutte le auto che transitavano per Casoria)
+Ievn a fni' ngopp' e milun
+Finivano sui miei cocomeri
+E niscin si firmav pi cde a me ke m'era succiessss
+(Nessuno mi soccoreva)
+E kakk run si futtie pur i milunn
+(E qualcuno se ne approffittava)
+Y ammuccava tiratm for da indu trraut
+(Io gridavo:"AIUTO!")
+E a gent s mittia i milun arin e bagagli ri machin e s n fuiev
+Yeeeeee I PORT U TRERAUT
+I PORT U TRERRAUT
+III PORT U TRERROUT
+I PORT U TRERROUT
+I PORT U TRERROUT
+I PORT U TRERROUT
+I purtava u trerrout
+(Io guidavo l'apecar)
+E mo port i stampell
+(E ora sono bloccato in ospedale)
+Ma sa ngapp a kill ka si futtia pur i milunn
+(Se trovo l'autore del furto dei miei cocomeri)
+N facc turna arret pur i skorz 'e i smentt
+(Gli faccio restituire le bucce e i semi)
+A gent fann tant i signour
+(La gente crede di essere per bene)
+E po se fut l milun
+-*/
+
