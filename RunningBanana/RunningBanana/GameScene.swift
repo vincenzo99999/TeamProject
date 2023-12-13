@@ -162,7 +162,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody?.restitution = 0 //necessary to always be pushed
         
         
-        player.position = CGPoint(x: -50, y: 35)
+        player.position = CGPoint(x: -50, y: -floorHeight + player.size.height/2)
         let xRange: SKRange = SKRange(lowerLimit: -frame.width, upperLimit: -50)
         let xCostraint = SKConstraint.positionX(xRange)
         player.constraints = [xCostraint]
