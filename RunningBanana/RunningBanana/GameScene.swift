@@ -252,7 +252,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelon.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         let horizontalPosition = (scene?.frame.width)! + watermelon.size.width
-        let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        let elevation = CGFloat.random(in: -(floorHeight + 50.0)..<((scene?.size.height)!/5))
         
         watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!, floorHeight: floorHeight)
         watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
@@ -321,7 +321,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
         
         let horizontalPosition = (scene?.frame.width)! + tank.size.width
-        let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        let elevation = CGFloat.random(in: -(floorHeight + 50.0)..<((scene?.size.height)!/5))
         
         tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
         tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation))
