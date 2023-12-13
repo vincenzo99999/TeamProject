@@ -255,7 +255,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
         
         watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!, floorHeight: floorHeight)
-        watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation+20))
         
         //Animation
         let sequence = SKAction.sequence([rotateLeft, rotateRight])
@@ -324,7 +324,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
         
         tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
-        tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation))
+        tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation+20))
         
         //Animation
         let sequence = SKAction.sequence([rotateLeft, rotateRight])
@@ -354,7 +354,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let horizontalPosition = (scene?.frame.width)! + hole.size.width
         let elevation = floor.position.y-200
         
-        holeSpawn = Hole(scene: self, sprite: hole, parallax: parallax!, floorHeight: floorHeight)
+        holeSpawn = Hole(scene: self, sprite: hole, parallax: parallax!, floorHeight: floorHeight+20)
         holeSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
     

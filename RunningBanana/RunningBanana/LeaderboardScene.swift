@@ -10,12 +10,11 @@ import SpriteKit
 
 class LeaderboardScene: SKScene {
     
-    let leaderboardEntries: [(name: String, score: Int)] = [
-        ("Giovanni", 833),
-        ("Arturo", 676),
-        ("Vincenzo", 532),
-        ("Carlo", 453),
-
+    var leaderboardEntries: [(name: String, score: Int)] = [
+        ("Giovanni", Int.random(in:1...2500)),
+        ("Arturo", Int.random(in:1...2500)),
+        ("Vincenzo", Int.random(in:1...2500)),
+        ("Carlo", Int.random(in:1...2500)),
     ]
 
     override func didMove(to view: SKView) {
@@ -23,6 +22,7 @@ class LeaderboardScene: SKScene {
     }
 
     func setupUI() {
+        leaderboardEntries.sort { $0.score > $1.score }
         let titleLabel = SKLabelNode(text: "Leaderboard")
         titleLabel.fontSize = 50.0
         titleLabel.position = CGPoint(x: frame.midX, y: frame.midY + 150)
