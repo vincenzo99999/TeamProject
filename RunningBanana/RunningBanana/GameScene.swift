@@ -215,7 +215,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //TODO spawn watermelons outside the screen
     func createWatermelon(){
-        watermelon=SKSpriteNode(color: .green, size: CGSize(width: 25, height: 25))
+        
+        let scale = 40.0
+        //watermelon=SKSpriteNode(color: .green, size: CGSize(width: 25, height: 25))
+        watermelon = SKSpriteNode(imageNamed: "melon")
+        watermelon.size = CGSize(width: watermelon.size.width/scale, height: watermelon.size.width/scale)
+        
         watermelon.position.x = 70
         watermelon.name="Watermelon"
         
@@ -236,9 +241,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createObstacle(){
+        let scale = 35.0
+        
+        obstacle = SKSpriteNode(imageNamed: "box")
+        obstacle.size = CGSize(width: obstacle.size.width/scale, height: obstacle.size.height/scale)
         
        // let randomNumber: Int = Int.random(in:1..<3)
-        obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
+        //obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
         //obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
         
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
@@ -268,9 +277,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func createTank(){
-        tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
+        
+        let scale = 10.0
+        tank = SKSpriteNode(imageNamed: "nitro")
+        tank.size = CGSize(width: tank.size.width/scale, height: tank.size.height/scale)
+        //tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
         tank.position.x = 70
-        tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        tank.position.y = CGFloat.random(in: -(floorHeight + 100.0)..<((scene?.size.height)!/5))
         tank.name="tank"
         tank.physicsBody=SKPhysicsBody(circleOfRadius:25)
         tank.physicsBody?.affectedByGravity=false
@@ -295,7 +308,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hole.position.x = 70
         hole.name="hole"
         hole.size=CGSize(width: hole.size.width/6, height: hole.size.height/6)
-        hole.physicsBody=SKPhysicsBody(rectangleOf: CGSize(width: hole.size.width/3, height:hole.size.height))
+        hole.physicsBody=SKPhysicsBody(rectangleOf: CGSize(width: hole.size.width/4, height:hole.size.height*1.5))
         hole.physicsBody?.affectedByGravity=false
         hole.physicsBody?.isDynamic=false
         hole.physicsBody?.categoryBitMask=6
