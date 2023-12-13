@@ -12,11 +12,12 @@ import SwiftUI
 struct PhysicsCategory{
     static let none: UInt32 = 0
     static let all: UInt32 = UInt32.max
-    static let player: UInt32 = 0b1
-    static let watermelon: UInt32 = 0b10
-    static let floor:UInt32 = 0b11
-    static let tank:UInt32 = 0b100
-    static let hole:UInt32 = 0b101
+    static let player: UInt32 = 0x1 << 1
+    static let watermelon: UInt32 = 0x1 << 2
+    static let floor:UInt32 = 0x1 << 3
+    static let tank:UInt32 = 0x1 << 4
+    static let hole:UInt32 = 0x1 << 5
+    static let obstacle: UInt32 = 0x1 << 6
 }
 protocol FloorContactDelegate: AnyObject {
     func playerDidContactFloor()
@@ -24,7 +25,7 @@ protocol FloorContactDelegate: AnyObject {
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-
+    
     var player:SKSpriteNode!
     
     //Counters
@@ -34,7 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Physics
     var isJumping:Bool=false
-    var worldGravity = -3.7
+    var worldGravity = -3.8
     
     //Floor
     var floorHeight: CGFloat = 150
@@ -61,7 +62,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var obstacleSpawn: Obstacle?
     var holeSpawn: Hole?
     var tankSpawn: Tank?
-        
+    
     //Running Time
     var startTime: TimeInterval? = nil
     var hasStartTimeBeenAssigned = false
@@ -142,6 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //updateTankPosition() //TODO delete this function
         
+        //Shold think about nitro implementation
         activateNitro()
         
         // Check for game over
@@ -151,42 +153,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
-
-    func updateVelocityUser(){
-        velocityuser = velocityuser * elapsedTime! * 0.025
-    }
-    
-    func isGameOver()->Bool{
-
-        if player.position.x <= -(scene?.size.width)! / 2 || player.position.y < floor.position.y{
-            return true
-        }
-        else{
-            return false
-        }
-    }
-    func getElapsedTime(currentTime: TimeInterval) -> TimeInterval{
-        return currentTime - startTime!
-    }
-    func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
-        scoreLabel.text = "\(Int(score))"
-    }
     func createPlayer() {
         self.player = SKSpriteNode(imageNamed: "treruote")
         player.name = "player"
         player.size = CGSize(width: player.size.width/2, height: player.size.height/2)
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.mass = 0.1
+        player.physicsBody?.restitution = 0 //necessary to always be pushed
+        
+        
         player.position = CGPoint(x: -50, y: 35)
         let xRange: SKRange = SKRange(lowerLimit: -frame.width, upperLimit: -50)
         let xCostraint = SKConstraint.positionX(xRange)
         player.constraints = [xCostraint]
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic=true
+        
         player.physicsBody?.categoryBitMask = PhysicsCategory.player
-        player.physicsBody?.contactTestBitMask = PhysicsCategory.watermelon
-        player.physicsBody?.collisionBitMask = PhysicsCategory.watermelon | PhysicsCategory.floor
+        player.physicsBody?.contactTestBitMask = PhysicsCategory.watermelon | PhysicsCategory.tank
+        player.physicsBody?.collisionBitMask = PhysicsCategory.floor | PhysicsCategory.obstacle
+        
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.velocity.dy = 0
         player.zPosition = 10
@@ -199,10 +185,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.position = CGPoint(x: 0, y: -floorHeight)  // Imposta la posizione del pavimento
         floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
         floor.physicsBody?.affectedByGravity=false
-        floor.physicsBody?.categoryBitMask = 2|PhysicsCategory.floor
+        
+        //Collision and test
         floor.physicsBody?.categoryBitMask = PhysicsCategory.floor
         floor.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        floor.physicsBody?.collisionBitMask = PhysicsCategory.player
+        floor.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.obstacle
+        
         floor.physicsBody?.isDynamic = false  // Il pavimento non si muove
         floor.zPosition=0
         
@@ -239,7 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelon.zPosition=11
         watermelon.physicsBody?.categoryBitMask = PhysicsCategory.watermelon
         watermelon.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        watermelon.physicsBody?.collisionBitMask = PhysicsCategory.player
+        watermelon.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         let horizontalPosition = (scene?.frame.width)! + watermelon.size.width
         let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
@@ -256,8 +244,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
         obstacle.physicsBody?.affectedByGravity=false
-        obstacle.physicsBody?.categoryBitMask = 3
-        obstacle.physicsBody?.isDynamic = true  // Il pavimento non si muove
+        obstacle.physicsBody?.mass = 100
+        
+        obstacle.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+        obstacle.physicsBody?.collisionBitMask = PhysicsCategory.floor | PhysicsCategory.player
+        
+        obstacle.physicsBody?.isDynamic = true
         obstacle.zPosition=8
         obstacle.physicsBody?.allowsRotation = false
         
@@ -270,6 +262,88 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacleSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
         
         obstacleCounter+=1
+    }
+    
+    
+    func createTank(){
+        tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
+        tank.position.x = 70
+        tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        tank.name="tank"
+        tank.physicsBody=SKPhysicsBody(circleOfRadius:25)
+        tank.physicsBody?.affectedByGravity=false
+        tank.physicsBody?.categoryBitMask=5
+        tank.physicsBody?.contactTestBitMask = 5
+        tank.physicsBody?.isDynamic=false
+        tank.zPosition=12
+        
+        tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
+        tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        
+        let horizontalPosition = (scene?.frame.width)! + tank.size.width
+        let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
+        
+        tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
+        tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation))
+        
+    }
+    
+    func createHole(){
+        hole=SKSpriteNode(imageNamed: "hole")
+        hole.position.x = 70
+        hole.name="hole"
+        hole.size=CGSize(width: hole.size.width/6, height: hole.size.height/6)
+        hole.physicsBody=SKPhysicsBody(rectangleOf: CGSize(width: hole.size.width/3, height:hole.size.height))
+        hole.physicsBody?.affectedByGravity=false
+        hole.physicsBody?.isDynamic=false
+        hole.physicsBody?.categoryBitMask=6
+        hole.physicsBody?.contactTestBitMask = 6
+        hole.zPosition=11
+        
+        hole.physicsBody?.categoryBitMask = PhysicsCategory.hole
+        hole.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        hole.physicsBody?.collisionBitMask = PhysicsCategory.none
+        
+        
+        let horizontalPosition = (scene?.frame.width)! + hole.size.width
+        let elevation = floor.position.y-200
+        
+        holeSpawn = Hole(scene: self, sprite: hole, parallax: parallax!, floorHeight: floorHeight)
+        holeSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+    }
+    
+    func createScore(){
+        scoreLabel = SKLabelNode(text:"\(Int(score))")
+        scoreLabel.fontSize=80.0
+        scoreLabel.fontColor = .yellow
+        
+        scoreLabel.position=CGPoint(x:0, y: 100)
+        scoreLabel.zPosition=12
+        addChild(scoreLabel)
+    }
+    
+    
+    func activateNitro(){
+        if tankCounter%10 == 0 && tankCounter != 0{
+            player.physicsBody?.applyImpulse(CGVector(dx: 100   , dy: 0))
+            print(tankCounter)
+            print("Nitro attivato")
+            tankCounter=0
+        }
+    }
+    
+
+    
+    func isGameOver()->Bool{
+        
+        if player.position.x <= -(scene?.size.width)!/2 || player.position.y < floor.position.y{
+            return true
+        }
+        return false
+        
+    }
+    func getElapsedTime(currentTime: TimeInterval) -> TimeInterval{
+        return currentTime - startTime!
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -286,11 +360,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
-
+    
     func CheckIfGrounded(){
         if player.physicsBody?.velocity.dy==0{
             isJumping=false
         }
+    }
+    
+    
+    func updateVelocityUser(){
+        velocityuser = velocityuser * elapsedTime! * 0.025
+    }
+    
+    func updateHolePosition(){
+        holeSpawn?.update()
+    }
+    
+    func updateScore(){
+        score = score+(velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        scoreLabel.text = "\(Int(score))"
     }
     
     //This creates problems
@@ -300,84 +388,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         player.physicsBody?.velocity.dx += 0.3
     }
-  
-  
-      func createTank(){
-          tank=SKSpriteNode(color: .black, size: CGSize(width: 25, height: 25))
-          tank.position.x = 70
-          tank.position.y = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
-          tank.name="tank"
-          tank.physicsBody=SKPhysicsBody(circleOfRadius:25)
-          tank.physicsBody?.affectedByGravity=false
-          tank.physicsBody?.categoryBitMask=5
-          tank.physicsBody?.contactTestBitMask = 5
-          tank.physicsBody?.isDynamic=false
-          tank.zPosition=12
-          tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
-          tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
-          tank.physicsBody?.collisionBitMask = PhysicsCategory.player
-          
-          let horizontalPosition = (scene?.frame.width)! + tank.size.width
-          let elevation = CGFloat.random(in: -floorHeight..<((scene?.size.height)!/5))
-          
-          tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
-          tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation))
-        
-    }
-  
-  
-    func updateTankPosition(){
-        tank.position.x -= posizionex
-        if tank.position.x < -frame.width - 30{
-            if let node=tank{
-                node.removeFromParent()
-                createTank()
-            }
-        }
-    }
-
-    func createScore(){
-        scoreLabel = SKLabelNode(text:"\(Int(score))")
-        scoreLabel.fontSize=80.0
-        scoreLabel.fontColor = .yellow
-        
-        scoreLabel.position=CGPoint(x:0, y: 100)
-        scoreLabel.zPosition=12
-        addChild(scoreLabel)
-    }
-    func activateNitro(){
-        if tankCounter%10 == 0 && tankCounter != 0{
-            player.physicsBody?.applyImpulse(CGVector(dx: 100   , dy: 0))
-            print(tankCounter)
-            print("Nitro attivato")
-            tankCounter=0
-        }
-    }
-    
-    func createHole(){
-        hole=SKSpriteNode(imageNamed: "hole")
-        hole.position.x = 70
-        hole.name="hole"
-        hole.size=CGSize(width: hole.size.width/6, height: hole.size.height/6)
-        hole.physicsBody=SKPhysicsBody(rectangleOf: CGSize(width: hole.size.width/3, height:hole.size.height))
-        hole.physicsBody?.affectedByGravity=false
-        hole.physicsBody?.isDynamic=false
-        hole.physicsBody?.categoryBitMask=6
-        hole.physicsBody?.contactTestBitMask = 6
-        hole.zPosition=11
-        hole.physicsBody?.categoryBitMask = PhysicsCategory.hole
-        hole.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        hole.physicsBody?.collisionBitMask = PhysicsCategory.player
-        let horizontalPosition = (scene?.frame.width)! + hole.size.width
-        let elevation = floor.position.y-200
-        
-        holeSpawn = Hole(scene: self, sprite: hole, parallax: parallax!, floorHeight: floorHeight)
-        holeSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
-    }
-    
-    func updateHolePosition(){
-        holeSpawn?.update()
-    }
     
     func showGameOverScene() {
         let gameOverScene = GameOverScene(size: size, score: Int(score), watermelonCollected: obstacleCounter)
@@ -385,7 +395,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         view?.presentScene(gameOverScene)
     }
     
-
+    
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
@@ -393,33 +403,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
             node.removeFromParent()
             watermelonCollectedHandler+=1
-            print(watermelonCollectedHandler)
+            print("melons: " + String(watermelonCollectedHandler))
         }
         if let node = secondBody.node, node.name == "Watermelon" && firstBody.node?.name=="player" {
             node.removeFromParent()
             watermelonCollectedHandler+=1
-            print(watermelonCollectedHandler)
+            print("melons: " + String(watermelonCollectedHandler))
         }
         if let node = firstBody.node, node.name == "tank" && secondBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
-            print(tankCounter)
-            print("contatto rilevato")
+            print("Tanks: " + String(tankCounter))
         }
         if let node = secondBody.node, node.name == "tank" && firstBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
-            print(tankCounter)
-            
-            print("contatto rilevato")
+            print("Tanks: " + String(tankCounter))
         }
         if let node = secondBody.node, node.name == "obstacle" && firstBody.node?.name == "player"{
             player.position.x -= velocityuser
+            print("Player touched obstacle")
         }
         if let node = firstBody.node, node.name == "obstacle" && secondBody.node?.name == "player"{
             player.position.x -= velocityuser
+            print("Player touched obstacle")
+
         }
         
         

@@ -16,15 +16,21 @@ class Obstacle: Spawnable{
         sprite = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
         sprite.physicsBody = SKPhysicsBody(rectangleOf: sprite.size)
         sprite.physicsBody?.affectedByGravity=true
-        sprite.physicsBody?.categoryBitMask = 3
+        sprite.physicsBody?.mass = 100
+        
+        sprite.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+        sprite.physicsBody?.collisionBitMask = PhysicsCategory.player | PhysicsCategory.floor
+        
         sprite.physicsBody?.isDynamic = true  // Il pavimento non si muove
         sprite.zPosition=8
         sprite.physicsBody?.allowsRotation = false
         
         
-        self.spawn(spawnPosition: CGPoint(x: scene.size.width + sprite.size.width,y: -floorHeight + 1))
-        
+        self.spawn(spawnPosition: CGPoint(x: scene.size.width + sprite.size.width,y: -floorHeight + sprite.size.height/2))
+            
         print("Obstacle respawned")
     }
+    
+
     
 }
