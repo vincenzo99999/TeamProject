@@ -7,20 +7,29 @@
 
 import Foundation
 import SpriteKit
+import SwiftUI
+
+@Observable
+class Leaderboard {
+    @ObservationIgnored
+    @AppStorage("Leaderboard")
+    var leaderboard = "carlo: 1337, arturo: 99999, giovanni: 69, vincenzo: NaN"
+}
+
 
 class LeaderboardScene: SKScene {
+
+    @State var leaderboard: Leaderboard
     
-    var leaderboardEntries: [(name: String, score: Int)] = [
-        ("Giovanni", Int.random(in:1...2500)),
-        ("Arturo", Int.random(in:1...2500)),
-        ("Vincenzo", Int.random(in:1...2500)),
-        ("Carlo", Int.random(in:1...2500)),
-    ]
-
-    override func didMove(to view: SKView) {
-        setupUI()
+    override init(){
+        self.leaderboard = leaderboard
     }
-
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    
     func setupUI() {
         leaderboardEntries.sort { $0.score > $1.score }
         let titleLabel = SKLabelNode(text: "Leaderboard")
