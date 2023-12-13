@@ -72,7 +72,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var posizionex: CGFloat = 1.4
     var velocityuser: CGFloat = 1.0
     
+    //Animation
+    var rotateLeft = SKAction.rotate(toAngle: .pi/3, duration: 0.6)
+    var rotateRight = SKAction.rotate(toAngle: -.pi/3, duration: 0.6)
+    var trickRotation = SKAction.rotate(toAngle: .pi*2 , duration: 0.8)
     
+    var jumpRotation = SKAction.rotate(toAngle: .pi/4, duration: 0.6)
+    var resetRotation = SKAction.rotate(toAngle: 0, duration: 0.6)
+    
+    
+    //touch amount
+    var touchingForSeconds: TimeInterval = 0.0
+    var countTouchTime: Bool = false
     
     override func sceneDidLoad() {
         
@@ -145,6 +156,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Shold think about nitro implementation
         activateNitro()
+        
+        //Touch amount
+        if(countTouchTime){
+            touchingForSeconds = currentTime - elapsedTime!
+            print("Touch time \(touchingForSeconds)")
+        }
+        
         
         // Check for game over
         if isGameOver() {
@@ -238,6 +256,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!, floorHeight: floorHeight)
         watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        
+        //Animation
+        let sequence = SKAction.sequence([rotateLeft, rotateRight])
+        let animation = SKAction.repeatForever(sequence)
+        
+        watermelon.run(animation)
+        
     }
     
     func createObstacle(){
@@ -246,7 +271,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacle = SKSpriteNode(imageNamed: "box")
         obstacle.size = CGSize(width: obstacle.size.width/scale, height: obstacle.size.height/scale)
         
-       // let randomNumber: Int = Int.random(in:1..<3)
+        // let randomNumber: Int = Int.random(in:1..<3)
         //obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
         //obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
         
@@ -301,6 +326,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
         tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation))
         
+        //Animation
+        let sequence = SKAction.sequence([rotateLeft, rotateRight])
+        let animation = SKAction.repeatForever(sequence)
+        
+        tank.run(animation)
+        
     }
     
     func createHole(){
@@ -347,7 +378,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-
+    
     
     func isGameOver()->Bool{
         
@@ -363,18 +394,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         jump()
+        countTouchTime = true
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        if(isJumping){
+            player.run(resetRotation)
+        }
+        countTouchTime = false
+        touchingForSeconds = 0.0
     }
     
     func jump(){
         if(!isJumping){
+            player.run(jumpRotation)
             self.player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 40))
             isJumping=true
         }
         
     }
+    
     
     func CheckIfGrounded(){
         if player.physicsBody?.velocity.dy==0{
