@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E49B9A12B2A0CAA002D7515 /* ThisStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */; };
 		4E6805122B2220C400E49679 /* MyScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E6805112B2220C400E49679 /* MyScene.sks */; };
 		4E6805142B23A28500E49679 /* Parallax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805132B23A28500E49679 /* Parallax.swift */; };
 		4E6805162B274CEF00E49679 /* Spawnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805152B274CEF00E49679 /* Spawnable.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisStorage.swift; sourceTree = "<group>"; };
 		4E6805112B2220C400E49679 /* MyScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyScene.sks; sourceTree = "<group>"; };
 		4E6805132B23A28500E49679 /* Parallax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parallax.swift; sourceTree = SOURCE_ROOT; };
 		4E6805152B274CEF00E49679 /* Spawnable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spawnable.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				4E6805112B2220C400E49679 /* MyScene.sks */,
 				54C6DD752B1F607500BBE823 /* Actions.sks */,
 				54C6DD772B1F607500BBE823 /* GameScene.swift */,
+				4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */,
 				4E6805152B274CEF00E49679 /* Spawnable.swift */,
 				543F92CD2B28A6CC0054B289 /* Tank.swift */,
 				4E6805172B287F2A00E49679 /* Obstacle.swift */,
@@ -185,6 +188,7 @@
 				54C6DD7A2B1F607500BBE823 /* GameViewController.swift in Sources */,
 				4E6805182B287F2A00E49679 /* Obstacle.swift in Sources */,
 				543F92CC2B289E9B0054B289 /* Hole.swift in Sources */,
+				4E49B9A12B2A0CAA002D7515 /* ThisStorage.swift in Sources */,
 				4E6805142B23A28500E49679 /* Parallax.swift in Sources */,
 				4E6805162B274CEF00E49679 /* Spawnable.swift in Sources */,
 				543F92CE2B28A6CC0054B289 /* Tank.swift in Sources */,
