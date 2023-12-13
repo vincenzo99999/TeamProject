@@ -175,7 +175,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player.physicsBody?.allowsRotation = false
         player.physicsBody?.velocity.dy = 0
-        player.zPosition = 10
+        player.zPosition = 8
         addChild(player)
     }
     
@@ -223,7 +223,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelon.physicsBody?.affectedByGravity=false
         watermelon.physicsBody?.isDynamic=true
         watermelon.physicsBody?.categoryBitMask=4
-        watermelon.physicsBody?.contactTestBitMask = 4
         watermelon.zPosition=11
         watermelon.physicsBody?.categoryBitMask = PhysicsCategory.watermelon
         watermelon.physicsBody?.contactTestBitMask = PhysicsCategory.player
@@ -238,13 +237,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createObstacle(){
         
-        let randomNumber: Int = Int.random(in:1..<3)
-        obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50*randomNumber))
+       // let randomNumber: Int = Int.random(in:1..<3)
+        obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
         //obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
         
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: obstacle.size)
-        obstacle.physicsBody?.affectedByGravity=false
+        obstacle.physicsBody?.affectedByGravity=true
         obstacle.physicsBody?.mass = 100
+        obstacle.physicsBody?.usesPreciseCollisionDetection = true
         
         obstacle.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
         obstacle.physicsBody?.collisionBitMask = PhysicsCategory.floor | PhysicsCategory.player
@@ -252,6 +252,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacle.physicsBody?.isDynamic = true
         obstacle.zPosition=8
         obstacle.physicsBody?.allowsRotation = false
+        
+        
         
         //addChild(obstacle)
         
