@@ -7,12 +7,16 @@
 
 import Foundation
 import SpriteKit
+import AVFoundation
 
 class GameMenuScene: SKScene {
+    var backgroundMusicPlayer: AVAudioPlayer?
 
     override func didMove(to view: SKView) {
         setupBackground()
         setupUI()
+        playBackgroundMusic(filename: "TrerroteRiff")
+       
     }
 
     private func setupBackground() {
@@ -21,6 +25,22 @@ class GameMenuScene: SKScene {
         backgroundImage.zPosition = -1 //lascia a -1
         backgroundImage.size = self.frame.size
         addChild(backgroundImage)
+    }
+    
+    func playBackgroundMusic(filename: String) {
+        guard let url = Bundle.main.url(forResource: filename, withExtension: ".mp3") else {
+            print("Could not find file: \(filename)")
+            return
+        }
+
+        do {
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundMusicPlayer?.numberOfLoops = -1 // Loop the music indefinitely
+            backgroundMusicPlayer?.prepareToPlay()
+            backgroundMusicPlayer?.play()
+        } catch let error as NSError {
+            print("Error playing music: \(error.localizedDescription)")
+        }
     }
 
     func setupUI() {
@@ -31,6 +51,7 @@ class GameMenuScene: SKScene {
         titleLabel.position = CGPoint(x: frame.midX, y: frame.midY + 150)
         addChild(titleLabel)
 
+        
         let playButton = SKLabelNode(text: "Play")
         playButton.fontColor = .black
         playButton.fontName="helvetica-bold"

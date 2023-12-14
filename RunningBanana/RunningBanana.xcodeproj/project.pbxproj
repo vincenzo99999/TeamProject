@@ -26,6 +26,7 @@
 		850B7C1A2B28AD4400D3AE0F /* GameMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */; };
 		850B7C1C2B28B3B400D3AE0F /* LeaderboardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850B7C1B2B28B3B400D3AE0F /* LeaderboardScene.swift */; };
 		851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */; };
+		8523B8A02B2B3940002DBFB5 /* TrerroteRiff.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8523B89F2B2B3940002DBFB5 /* TrerroteRiff.mp3 */; };
 		858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858AFB352B2A08D300F23731 /* EnterNameScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuScene.swift; sourceTree = "<group>"; };
 		850B7C1B2B28B3B400D3AE0F /* LeaderboardScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardScene.swift; sourceTree = "<group>"; };
 		851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		8523B89F2B2B3940002DBFB5 /* TrerroteRiff.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = TrerroteRiff.mp3; path = ../../../../../Downloads/TrerroteRiff.mp3; sourceTree = "<group>"; };
 		858AFB352B2A08D300F23731 /* EnterNameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 				4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */,
 				4E6805152B274CEF00E49679 /* Spawnable.swift */,
 				543F92CD2B28A6CC0054B289 /* Tank.swift */,
+				8523B89F2B2B3940002DBFB5 /* TrerroteRiff.mp3 */,
 				4E6805172B287F2A00E49679 /* Obstacle.swift */,
 				4E6805192B28843600E49679 /* Watermelon.swift */,
 				851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */,
@@ -166,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */,
+				8523B8A02B2B3940002DBFB5 /* TrerroteRiff.mp3 in Resources */,
 				54C6DD742B1F607500BBE823 /* GameScene.sks in Resources */,
 				54C6DD7F2B1F607600BBE823 /* Assets.xcassets in Resources */,
 				54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */,
