@@ -25,23 +25,31 @@ class GameMenuScene: SKScene {
 
     func setupUI() {
         let titleLabel = SKLabelNode(text: "Game Menu")
+        titleLabel.fontColor = .black
+        titleLabel.fontName="helvetica-bold"
         titleLabel.fontSize = 50.0
         titleLabel.position = CGPoint(x: frame.midX, y: frame.midY + 150)
         addChild(titleLabel)
 
         let playButton = SKLabelNode(text: "Play")
+        playButton.fontColor = .black
+        playButton.fontName="helvetica-bold"
         playButton.fontSize = 30.0
         playButton.position = CGPoint(x: frame.midX, y: frame.midY + 50)
         playButton.name = "play"
         addChild(playButton)
 
         let shopButton = SKLabelNode(text: "Shop")
+        shopButton.fontColor = .black
+        shopButton.fontName="helvetica-bold"
         shopButton.fontSize = 30.0
         shopButton.position = CGPoint(x: frame.midX, y: frame.midY - 25)
         shopButton.name = "shop"
         addChild(shopButton)
 
         let leaderboardButton = SKLabelNode(text: "Leaderboard")
+        leaderboardButton.fontColor = .black
+        leaderboardButton.fontName="helvetica-bolf"
         leaderboardButton.fontSize = 30.0
         leaderboardButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
         leaderboardButton.name = "leaderboard"
