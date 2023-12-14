@@ -6,7 +6,7 @@
 //
 
 
-// Inside GameOverScene.swift
+
 
 import SpriteKit
 import UIKit
@@ -32,6 +32,13 @@ class GameOverScene: SKScene {
         gameOverLabel.fontSize = 50.0
         gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100)
         addChild(gameOverLabel)
+        
+        let backgroundImage = SKSpriteNode(imageNamed: "gameOverBackground")
+           backgroundImage.position = CGPoint(x: frame.midX, y: frame.midY)
+           backgroundImage.zPosition = -1
+           backgroundImage.size = self.frame.size
+           addChild(backgroundImage)
+
 
         let scoreLabel = SKLabelNode(text: "Score: \(score)")
         scoreLabel.fontSize = 30.0
@@ -54,6 +61,12 @@ class GameOverScene: SKScene {
         enterNameButton.position = CGPoint(x: frame.midX, y: frame.midY - 150)
         enterNameButton.name = "enterName"
         addChild(enterNameButton)
+        
+        let menuButton = SKLabelNode(text: "Menu")
+        menuButton.fontSize = 30.0
+        menuButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
+        menuButton.name = "menuButton"
+        addChild(menuButton)
     }
 
     func restartGame() {
@@ -90,3 +103,17 @@ class GameOverScene: SKScene {
         }
     }
 }
+
+/*
+ 
+ 
+               _                           _
+              | |                         | |
+__      ____ _| |_ ___ _ __ _ __ ___   ___| | ___  _ __
+\ \ /\ / / _` | __/ _ \ '__| '_ ` _ \ / _ \ |/ _ \| '_ \
+ \ V  V / (_| | ||  __/ |  | | | | | |  __/ | (_) | | | |
+  \_/\_/ \__,_|\__\___|_|  |_| |_| |_|\___|_|\___/|_| |_| :D /*
+                                          
+
+
+                                                              */*/
