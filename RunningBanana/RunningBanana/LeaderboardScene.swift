@@ -9,7 +9,7 @@ import Foundation
 import SpriteKit
 
 class LeaderboardScene: SKScene {
-    
+
     var leaderboardEntries: [(name: String, score: Int)] = [
         ("Giovanni", Int.random(in:1...2500)),
         ("Arturo", Int.random(in:1...2500)),
@@ -50,13 +50,13 @@ class LeaderboardScene: SKScene {
         // UGUALE A SOPRA MA INIZIALIZZA TUTTA LA ROBA
         for (index, entry) in leaderboardEntries.enumerated() {
             let entryLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
-            entryLabel.text = "\(entry.name): \(entry.score)"
+            entryLabel.text = "(entry.name): (entry.score)"
             entryLabel.fontSize = 30.0
             entryLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100 - CGFloat(index * 40))
             addChild(entryLabel)
         }
 
-        
+
         let backButton = SKLabelNode(fontNamed: "Helvetica-Bold")
         backButton.text = "Back"
         backButton.fontSize = 30.0
@@ -82,4 +82,3 @@ class LeaderboardScene: SKScene {
         }
     }
 }
-
