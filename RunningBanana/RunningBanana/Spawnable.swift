@@ -15,15 +15,18 @@ class Spawnable{
     var sprite: SKSpriteNode
     var floorHeight: CGFloat
     var parallaxLastLayerSpeed: CGFloat
+    var parallax: Parallax
     
     init(scene: SKScene, sprite: SKSpriteNode, parallax: Parallax, floorHeight: CGFloat) {
         self.scene = scene
         self.sprite = sprite
         self.floorHeight = floorHeight
         self.parallaxLastLayerSpeed = parallax.speed + (CGFloat(parallax.parallaxLayerSprites.count-1) * parallax.speedFactor)
+        self.parallax = parallax
     }
     
     func update(){
+        self.parallaxLastLayerSpeed = parallax.speed + (CGFloat(parallax.parallaxLayerSprites.count-1) * parallax.speedFactor)
         sprite.position.x -= parallaxLastLayerSpeed
         //print("\(String(describing: sprite.name)) position: \(sprite.position.x)")
         

@@ -35,6 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var tankCounter:Int=0
     var watermelonCollectedHandler:Int=0
     
+    
     //Physics
     var isJumping:Bool=false
     var worldGravity = -3.8
@@ -82,12 +83,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var jumpRotation = SKAction.rotate(toAngle: .pi/4, duration: 0.6)
     var resetRotation = SKAction.rotate(toAngle: 0, duration: 0.6)
     
-    
     //touch amount
     var touchingForSeconds: TimeInterval = 0.0
     var countTouchTime: Bool = false
     var isGamePaused: Bool = false
-
+    
+    //Dash
+    var dashSpeed: CGFloat = 40.0
+    var isDashing = false
+    var isDashStarted = false
+    var dashStartTime: TimeInterval = 0.0
+    var dashTimer: TimeInterval = 0.0
     
     override func sceneDidLoad() {
         
@@ -167,6 +173,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             touchingForSeconds = currentTime - elapsedTime!
             //print("Touch time \(touchingForSeconds)")
         }
+        
+        if isDashing {
+            
+            if !isDashStarted {
+                isDashStarted = true
+                dashStartTime = elapsedTime!
+                startDash()
+            }
+            
+            dashTimer = elapsedTime! - dashStartTime
+            
+            if dashTimer >= 0.2 {
+                isDashStarted = false
+                stopDash()
+            }
+        }
+        
         
         
         // Check for game over
@@ -484,12 +507,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
             tankCounter+=1
             createTank()
+            isDashing = true
             print("Tanks: " + String(tankCounter))
         }
         if let node = secondBody.node, node.name == "tank" && firstBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
+            isDashing = true
             print("Tanks: " + String(tankCounter))
         }
         if let node = secondBody.node, node.name == "obstacle" && firstBody.node?.name == "player"{
@@ -532,6 +557,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pauseButton.name = "pauseButton"
         pauseButton.zPosition=10
         addChild(pauseButton)
+    }
+    
+    func startDash(){
+        parallax?.speed = dashSpeed
+        print("dashing")
+    }
+    
+    func stopDash(){
+        isDashing = false
+        parallax?.speed = velocityuser
+        print("dash stopped")
     }
     
     
