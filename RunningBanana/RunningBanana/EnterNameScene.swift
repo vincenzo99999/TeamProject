@@ -81,4 +81,5 @@ class EnterNameScene: SKScene, UITextFieldDelegate {
                 skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
             }
     }
+    
 }
