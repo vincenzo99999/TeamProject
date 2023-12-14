@@ -25,6 +25,7 @@ protocol FloorContactDelegate: AnyObject {
 }
 
 
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player:SKSpriteNode!
@@ -85,6 +86,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //touch amount
     var touchingForSeconds: TimeInterval = 0.0
     var countTouchTime: Bool = false
+    var isGamePaused: Bool = false
+
     
     override func sceneDidLoad() {
         
@@ -126,6 +129,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createWatermelon()
         createObstacle()
         createTank()
+        setupPauseButton()
     }
     
     //Called every frame
@@ -394,8 +398,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        jump()
-        countTouchTime = true
+        for touch in touches {
+            let location = touch.location(in: self)
+            let nodesAtLocation = nodes(at: location)
+            
+            for node in nodesAtLocation {
+                if node.name == "pauseButton" {
+                    togglePause()
+                } else {
+                    jump()
+                    countTouchTime = true
+                }
+            }
+        }
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if(isJumping){
@@ -497,6 +512,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
+    }
+    func togglePause() {
+        isGamePaused.toggle()
+        
+        if isGamePaused {
+            self.view?.isPaused = true
+            physicsWorld.speed = 0
+        } else {
+            self.view?.isPaused = false
+            physicsWorld.speed = 1.0
+        }
+    }
+    func setupPauseButton() {
+        let pauseButton = SKSpriteNode(imageNamed: "pauseButton") // Replace with your pause button image
+        pauseButton.position = CGPoint(x: frame.midX + 300, y: frame.midY + 150)
+        pauseButton.size.width=(pauseButton.size.width)/5
+        pauseButton.size.height=(pauseButton.size.height)/5
+        pauseButton.name = "pauseButton"
+        pauseButton.zPosition=10
+        addChild(pauseButton)
     }
     
     
