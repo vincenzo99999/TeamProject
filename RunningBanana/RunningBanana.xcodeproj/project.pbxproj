@@ -30,7 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisStorage.swift; sourceTree = "<group>"; };
+		4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisStorage.swift; sourceTree = "<group>"; usesTabs = 0; };
 		4E6805112B2220C400E49679 /* MyScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyScene.sks; sourceTree = "<group>"; };
 		4E6805132B23A28500E49679 /* Parallax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parallax.swift; sourceTree = SOURCE_ROOT; };
 		4E6805152B274CEF00E49679 /* Spawnable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spawnable.swift; sourceTree = "<group>"; };
