@@ -32,12 +32,13 @@ class Spawnable{
             sprite.removeFromParent()
             print("\(String(describing: sprite.name)) removed")
             //Respawn probability
-            if Int.random(in: 0...100) <= 10 {
+            if Int.random(in: 0...100) <= 60 {
                 //spawn(spawnPosition: nextSpawnPosition)
                 Respawn()
             }
             
         }
+        
     }
     
     func spawn(spawnPosition: CGPoint){

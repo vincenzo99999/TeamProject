@@ -107,10 +107,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Append layers in order from the furthest one to the closest
         parallaxLayerSprites?.append(backTreeSprite)
-        parallaxLayerSprites?.append(middleTreeSprite)
-        parallaxLayerSprites?.append(lightSprite)
         parallaxLayerSprites?.append(frontTreeSprite)
         
+
         
         createFloor()
         createPlayer()
