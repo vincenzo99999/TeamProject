@@ -53,7 +53,7 @@ class LeaderboardScene: SKScene {
             let entryLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
             entryLabel.text = "\(entry.name): \(entry.score)"
             entryLabel.fontColor = .black
-            entryLabel.fontSize = 30.0
+            entryLabel.fontSize = 20.0
             entryLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100 - CGFloat(index * 40))
             addChild(entryLabel)
         }

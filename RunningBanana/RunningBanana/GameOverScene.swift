@@ -128,6 +128,14 @@ class GameOverScene: SKScene {
         }
     }
 
+    func goToMenu() {
+        if let skView = self.view as? SKView {
+            let menuScene = GameMenuScene(size: skView.bounds.size)
+            menuScene.scaleMode = .aspectFill
+            skView.presentScene(menuScene, transition: SKTransition.fade(withDuration: 0.5))
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
 
@@ -139,9 +147,12 @@ class GameOverScene: SKScene {
                 restartGame()
             } else if node.name == "enterName" {
                 askForName()
+            } else if node.name == "menuButton" {
+                goToMenu()
             }
         }
     }
+
 }
 
 /*
