@@ -462,7 +462,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func isGameOver()->Bool{
         
         if player.position.x <= -(scene?.size.width)!/2 || player.position.y < floor.position.y{
-            stopBackgroundMusic() // Stop the music
             return true
         }
         return false
@@ -542,6 +541,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let gameOverScene = GameOverScene(size: size, score: Int(score), watermelonCollected: obstacleCounter)
         gameOverScene.scaleMode = scaleMode
         view?.presentScene(gameOverScene)
+        stopBackgroundMusic() // Stop the music
     }
     
     
