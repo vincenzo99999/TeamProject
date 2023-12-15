@@ -36,7 +36,7 @@ class GameOverScene: SKScene {
         gameOverLabel.fontColor = .black
         gameOverLabel.fontName = "helvetica-bold"
         gameOverLabel.fontSize = 50.0
-        gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100)
+        gameOverLabel.position = CGPoint(x: frame.midX, y: frame.midY + 150)
         addChild(gameOverLabel)
         
         let backgroundImage = SKSpriteNode(imageNamed: "gameOverBackground")
@@ -47,40 +47,40 @@ class GameOverScene: SKScene {
 
 
         let scoreLabel = SKLabelNode(text: "Score: \(score)")
-        scoreLabel.fontColor = .black
+        scoreLabel.fontColor = .white
         scoreLabel.fontName = "helvetica-bold"
         scoreLabel.fontSize = 30.0
-        scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        scoreLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100)
         addChild(scoreLabel)
 
         let watermelonLabel = SKLabelNode(text: "Watermelon Collected: \(watermelonCollected)")
-        watermelonLabel.fontColor = .black
+        watermelonLabel.fontColor = .white
         watermelonLabel.fontName="helvetica-bold"
         watermelonLabel.fontSize = 30.0
-        watermelonLabel.position = CGPoint(x: frame.midX, y: frame.midY - 50)
+        watermelonLabel.position = CGPoint(x: frame.midX, y: frame.midY + 500)
         addChild(watermelonLabel)
 
         let playAgainButton = SKLabelNode(text: "Play Again")
-        playAgainButton.fontColor = .black
+        playAgainButton.fontColor = .white
         playAgainButton.fontName="helvetica-bold"
         playAgainButton.fontSize = 30.0
-        playAgainButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
+        playAgainButton.position = CGPoint(x: frame.midX, y: frame.midY - 50)
         playAgainButton.name = "playAgain"
         addChild(playAgainButton)
         
         let enterNameButton = SKLabelNode(text: "Enter Name")
-        enterNameButton.fontColor = .black
+        enterNameButton.fontColor = .white
         enterNameButton.fontName = "helvetica-bold"
         enterNameButton.fontSize = 30.0
-        enterNameButton.position = CGPoint(x: frame.midX, y: frame.midY - 150)
+        enterNameButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
         enterNameButton.name = "enterName"
         addChild(enterNameButton)
         
         let menuButton = SKLabelNode(text: "Menu")
-        menuButton.fontColor = .black
+        menuButton.fontColor = .white
         menuButton.fontName = "helvetica-bold"
         menuButton.fontSize = 30.0
-        menuButton.position = CGPoint(x: frame.midX, y: frame.midY - 200)
+        menuButton.position = CGPoint(x: frame.midX, y: frame.midY - 150)
         menuButton.name = "menuButton"
         addChild(menuButton)
     }
