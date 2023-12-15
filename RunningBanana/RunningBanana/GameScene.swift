@@ -102,11 +102,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var isGamePaused: Bool = false
     
     //Dash
-    var dashSpeed: CGFloat = 40.0
+    var dashSpeed: CGFloat = 30.0
     var isDashing = false
     var isDashStarted = false
     var dashStartTime: TimeInterval = 0.0
     var dashTimer: TimeInterval = 0.0
+    
+    //Milestone
+    let milestoneArray: [CGFloat] = [100.0, 200.0, 500.0]
+    var progressBar: SKSpriteNode!
+    var progressPercentage: CGFloat = 0.0
+    var progressBarSize: CGFloat = 300.0
     
     override func sceneDidLoad() {
         
@@ -180,7 +186,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //updatePlayerSpeed()
         
         updateScore()
-        
+                
         //updateTankPosition() //TODO delete this function
         
         //Shold think about nitro implementation
@@ -207,7 +213,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 stopDash()
             }
         }
-        
         
         
         // Check for game over
@@ -428,7 +433,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreBackground.zPosition = 12
         
         //MODIFY THIS ONE TO CHANGE POSITION OF THE SCORE
-        scoreBackground.position = CGPoint(x: 100, y: 100)
+        scoreBackground.position = CGPoint(x: -400, y: 100)
         
         scoreLabel = SKLabelNode(text:"\(Int(score))")
         scoreLabel.fontSize=80.0
@@ -440,6 +445,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreMultiplierLabel = SKLabelNode(text: "x\(scoreMultiplier)")
         scoreMultiplierLabel?.position = CGPoint(x: 225, y: 30)
         scoreMultiplierLabel?.fontColor = .black
+        
+        
         
         scoreBackground.addChild(scoreLabel)
         scoreBackground.addChild(scoreMultiplierLabel!)
@@ -560,8 +567,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let watermelonAddedSprite: SKSpriteNode = watermelon.copy() as! SKSpriteNode
             watermelonAddedSprite.physicsBody?.contactTestBitMask = PhysicsCategory.none
-            watermelonAddedSprite.position = CGPoint(x: 325, y: 130)
-            addChild(watermelonAddedSprite)
+            watermelonAddedSprite.position = scoreMultiplierLabel!.position
+            scoreBackground.addChild(watermelonAddedSprite)
             fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut, SKAction.removeFromParent()])
             fadeNScale.timingMode = .easeInEaseOut
             
