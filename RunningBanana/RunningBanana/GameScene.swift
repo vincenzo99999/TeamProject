@@ -116,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func sceneDidLoad() {
         
-        playBackgroundMusic(filename: "treruote.mp3") //Music (Approved by Tony!)
+        playBackgroundMusic(filename: "TrerroteRiff.mp3") //Music (Approved by Tony!)
         
         //Animation
         fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])

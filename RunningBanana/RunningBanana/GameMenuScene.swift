@@ -15,7 +15,7 @@ class GameMenuScene: SKScene {
     override func didMove(to view: SKView) {
         setupBackground()
         setupUI()
-        playBackgroundMusic(filename: "TrerroteRiff")
+        playBackgroundMusic(filename: "treruote")
        
     }
     
