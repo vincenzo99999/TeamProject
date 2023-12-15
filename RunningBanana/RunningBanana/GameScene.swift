@@ -35,7 +35,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var tankCounter:Int=0
     var watermelonCollectedHandler:Int=0
     
-    
     //Physics
     var isJumping:Bool=false
     var worldGravity = -3.8
@@ -87,6 +86,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var jumpRotation = SKAction.rotate(toAngle: .pi/4, duration: 0.6)
     var resetRotation = SKAction.rotate(toAngle: 0, duration: 0.6)
     
+    var fadeIn = SKAction.fadeIn(withDuration: 0.2)
+    var scale = SKAction.scale(by: 1.3, duration: 0.2)
+    var fadeOut = SKAction.fadeOut(withDuration: 0.2)
+    
+    var fadeNScale: SKAction!
+    
     //touch amount
     var touchingForSeconds: TimeInterval = 0.0
     var countTouchTime: Bool = false
@@ -100,6 +105,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var dashTimer: TimeInterval = 0.0
     
     override func sceneDidLoad() {
+        
+        //Animation
+        fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])
+        fadeNScale.timingMode = .easeOut
         
         //set anchor point
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -529,19 +538,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     
+
+    
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
+        //Make 1 function for each collision
         
-        if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
+        func watermelonTouch(_ node: SKNode) {
             node.removeFromParent()
             watermelonCollectedHandler+=1
             print("melons: " + String(watermelonCollectedHandler))
+            
+            let watermelonAddedSprite: SKSpriteNode = watermelon.copy() as! SKSpriteNode
+            watermelonAddedSprite.physicsBody?.contactTestBitMask = PhysicsCategory.none
+            watermelonAddedSprite.position = CGPoint(x: 325, y: 130)
+            addChild(watermelonAddedSprite)
+            fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut, SKAction.removeFromParent()])
+            fadeNScale.timingMode = .easeInEaseOut
+            
+            fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])
+            
+            watermelonAddedSprite.run(fadeNScale)
+            
+        }
+
+        if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
+            watermelonTouch(node)
         }
         if let node = secondBody.node, node.name == "Watermelon" && firstBody.node?.name=="player" {
-            node.removeFromParent()
-            watermelonCollectedHandler+=1
-            print("melons: " + String(watermelonCollectedHandler))
+            watermelonTouch(node)
         }
         if let node = firstBody.node, node.name == "tank" && secondBody.node?.name=="player" {
             node.removeFromParent()
