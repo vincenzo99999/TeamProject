@@ -50,6 +50,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabel:SKLabelNode!
     var score:CGFloat=0
     var scoreBackground = SKShapeNode()
+    var scoreMultiplierLabel: SKLabelNode?
+    var scoreMultiplier: CGFloat = 0
     
     //Parallax Array
     var parallaxLayerSprites: [SKSpriteNode?]? = []
@@ -404,6 +406,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         signSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
     func createScore(){
+        scoreBackground = SKShapeNode(path:
+                                        CGPath(roundedRect: CGRect(x: 0, y: 0,width: 180, height: 90), cornerWidth: 30, cornerHeight: 30, transform: nil))
+        scoreBackground.fillColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        scoreBackground.strokeColor = .white
+        scoreBackground.zPosition = 12
+        
+        //MODIFY THIS ONE TO CHANGE POSITION OF THE SCORE
+        scoreBackground.position = CGPoint(x: 100, y: 100)
         
         scoreLabel = SKLabelNode(text:"\(Int(score))")
         scoreLabel.fontSize=80.0
@@ -411,14 +421,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position=CGPoint(x: 90, y: 18)
         scoreLabel.zPosition=13
         
-        scoreBackground = SKShapeNode(path:
-                                        CGPath(roundedRect: CGRect(x: 0, y: 0,width: 180, height: 90), cornerWidth: 30, cornerHeight: 30, transform: nil))
-        scoreBackground.fillColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
-        scoreBackground.strokeColor = .white
-        scoreBackground.zPosition = 12
-        scoreBackground.position = CGPoint(x: 180, y: 100)
+        scoreMultiplier = (velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        scoreMultiplierLabel = SKLabelNode(text: "x\(scoreMultiplier)")
+        scoreMultiplierLabel?.position = CGPoint(x: 225, y: 30)
+        scoreMultiplierLabel?.fontColor = .black
         
         scoreBackground.addChild(scoreLabel)
+        scoreBackground.addChild(scoreMultiplierLabel!)
         
         addChild(scoreBackground)
     }
@@ -497,7 +506,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        
+        scoreMultiplier = (velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        scoreMultiplierLabel!.text = "x\(Double(round(scoreMultiplier * 100)/100))"
+        
+        score = score + scoreMultiplier
         scoreLabel.text = "\(Int(score))"
     }
     
