@@ -3,12 +3,15 @@
 //
 //  Created by Vincenzo Eboli on 05/12/23.
 //  Code partially cleaned by Arturo - "I did what i could"
+//  Designed with hopes and dreams by Giovanni - "Uagliu, we have to push!"
+
 
 import SpriteKit
 import GameplayKit
 import Foundation
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct PhysicsCategory{
     static let none: UInt32 = 0
@@ -29,6 +32,7 @@ protocol FloorContactDelegate: AnyObject {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player:SKSpriteNode!
+    var backgroundMusicPlayer: AVAudioPlayer?
     
     //Counters
     var obstacleCounter:Int=0
@@ -105,6 +109,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var dashTimer: TimeInterval = 0.0
     
     override func sceneDidLoad() {
+        
+        playBackgroundMusic(filename: "treruote.mp3") //Music (Approved by Tony!)
         
         //Animation
         fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])
@@ -456,6 +462,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func isGameOver()->Bool{
         
         if player.position.x <= -(scene?.size.width)!/2 || player.position.y < floor.position.y{
+            stopBackgroundMusic() // Stop the music
             return true
         }
         return false
@@ -616,7 +623,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func setupPauseButton() {
-        let pauseButton = SKSpriteNode(imageNamed: "pauseButton") // Replace with your pause button image
+        let pauseButton = SKSpriteNode(imageNamed: "pauseButton")
         pauseButton.position = CGPoint(x: frame.midX + 400, y: frame.midY + 150)
         pauseButton.size.width=(pauseButton.size.width)/5
         pauseButton.size.height=(pauseButton.size.height)/5
@@ -636,6 +643,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("dash stopped")
     }
     
+    func playBackgroundMusic(filename: String) {
+        guard let url = Bundle.main.url(forResource: filename, withExtension: nil) else {
+            print("Could not find file: \(filename)")
+            return
+        }
+
+        do {
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundMusicPlayer?.numberOfLoops = -1 // Loop indefinitely
+            backgroundMusicPlayer?.prepareToPlay()
+            backgroundMusicPlayer?.play()
+        } catch let error as NSError {
+            print("Error playing music: \(error.localizedDescription)")
+        }
+    }
+    
+    func stopBackgroundMusic() {
+        backgroundMusicPlayer?.stop()
+    }
     
 }
 
