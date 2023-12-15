@@ -75,7 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //position and velocity
     var posizionex: CGFloat = 1.4
-    var velocityuser: CGFloat = 1.0
+    var velocityuser: CGFloat = 2.0
     
     //Animation
     var rotateLeft = SKAction.rotate(toAngle: .pi/3, duration: 0.6)

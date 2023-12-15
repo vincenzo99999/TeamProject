@@ -28,7 +28,6 @@
 		850B7C1C2B28B3B400D3AE0F /* LeaderboardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850B7C1B2B28B3B400D3AE0F /* LeaderboardScene.swift */; };
 		851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */; };
 		8523B8A22B2B552D002DBFB5 /* RoadSign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523B8A12B2B552D002DBFB5 /* RoadSign.swift */; };
-		8523B8A42B2B67D1002DBFB5 /* ThisStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523B8A32B2B67D1002DBFB5 /* ThisStorage.swift */; };
 		858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858AFB352B2A08D300F23731 /* EnterNameScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +54,6 @@
 		850B7C1B2B28B3B400D3AE0F /* LeaderboardScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardScene.swift; sourceTree = "<group>"; };
 		851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		8523B8A12B2B552D002DBFB5 /* RoadSign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadSign.swift; sourceTree = "<group>"; };
-		8523B8A32B2B67D1002DBFB5 /* ThisStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThisStorage.swift; path = ../../../../../Desktop/ThisStorage.swift; sourceTree = "<group>"; };
 		858AFB352B2A08D300F23731 /* EnterNameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,7 +97,6 @@
 				4E6805112B2220C400E49679 /* MyScene.sks */,
 				54C6DD752B1F607500BBE823 /* Actions.sks */,
 				54C6DD772B1F607500BBE823 /* GameScene.swift */,
-				8523B8A32B2B67D1002DBFB5 /* ThisStorage.swift */,
 				4E6805152B274CEF00E49679 /* Spawnable.swift */,
 				543F92CD2B28A6CC0054B289 /* Tank.swift */,
 				4E6805172B287F2A00E49679 /* Obstacle.swift */,
@@ -194,7 +191,6 @@
 			files = (
 				850B7C1C2B28B3B400D3AE0F /* LeaderboardScene.swift in Sources */,
 				858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */,
-				8523B8A42B2B67D1002DBFB5 /* ThisStorage.swift in Sources */,
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
 				851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */,
 				8523B8A22B2B552D002DBFB5 /* RoadSign.swift in Sources */,
