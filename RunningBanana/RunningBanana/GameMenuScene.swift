@@ -45,7 +45,7 @@ class GameMenuScene: SKScene {
     }
 
     func setupUI() {
-        let titleLabel = SKLabelNode(text: "Game Menu")
+        let titleLabel = SKLabelNode(text: "Three Wheels")
         titleLabel.fontColor = .black
         titleLabel.fontName="helvetica-bold"
         titleLabel.fontSize = 50.0
