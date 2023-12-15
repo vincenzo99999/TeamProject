@@ -520,7 +520,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func updateVelocityUser(){
-        velocityuser = velocityuser * elapsedTime! * 0.025
+        velocityuser = velocityuser + 0.3
+        print(velocityuser)
     }
     
     func updateHolePosition(){
@@ -579,9 +580,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
             watermelonTouch(node)
+            updateVelocityUser()
+
         }
         if let node = secondBody.node, node.name == "Watermelon" && firstBody.node?.name=="player" {
             watermelonTouch(node)
+            updateVelocityUser()
+
         }
         if let node = firstBody.node, node.name == "tank" && secondBody.node?.name=="player" {
             node.removeFromParent()
