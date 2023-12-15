@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //Score
     var scoreLabel:SKLabelNode!
     var score:CGFloat=0
+    var scoreBackground = SKShapeNode()
     
     //Parallax Array
     var parallaxLayerSprites: [SKSpriteNode?]? = []
@@ -388,13 +389,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createScore(){
+        
         scoreLabel = SKLabelNode(text:"\(Int(score))")
         scoreLabel.fontSize=80.0
-        scoreLabel.fontColor = .yellow
+        scoreLabel.fontColor = .white
+        scoreLabel.position=CGPoint(x: 90, y: 18)
+        scoreLabel.zPosition=13
         
-        scoreLabel.position=CGPoint(x:0, y: 100)
-        scoreLabel.zPosition=12
-        addChild(scoreLabel)
+        scoreBackground = SKShapeNode(path:
+                                        CGPath(roundedRect: CGRect(x: 0, y: 0,width: 180, height: 90), cornerWidth: 30, cornerHeight: 30, transform: nil))
+        scoreBackground.fillColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        scoreBackground.strokeColor = .white
+        scoreBackground.zPosition = 12
+        scoreBackground.position = CGPoint(x: 180, y: 100)
+        
+        scoreBackground.addChild(scoreLabel)
+        
+        addChild(scoreBackground)
     }
     
     
@@ -552,7 +563,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     func setupPauseButton() {
         let pauseButton = SKSpriteNode(imageNamed: "pauseButton") // Replace with your pause button image
-        pauseButton.position = CGPoint(x: frame.midX + 300, y: frame.midY + 150)
+        pauseButton.position = CGPoint(x: frame.midX + 400, y: frame.midY + 150)
         pauseButton.size.width=(pauseButton.size.width)/5
         pauseButton.size.height=(pauseButton.size.height)/5
         pauseButton.name = "pauseButton"
