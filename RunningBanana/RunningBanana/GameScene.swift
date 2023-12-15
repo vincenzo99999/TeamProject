@@ -104,7 +104,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var dashStartTime: TimeInterval = 0.0
     var dashTimer: TimeInterval = 0.0
     
+    //Milestone
+    let milestoneArray: [CGFloat] = [100.0, 200.0, 500.0]
+    var progressBar: SKSpriteNode!
+    var progressPercentage: CGFloat = 0.0
+    var progressBarSize: CGFloat = 300.0
+    
     override func sceneDidLoad() {
+        
+        //Progress bar
+        progressBar = SKSpriteNode(color: .white, size: CGSize(width: progressBarSize, height: 20))
+        progressBar.position = CGPoint(x: 0, y: -200)
+        progressBar.zPosition = 20
+        
+        
+        addChild(progressBar)
         
         //Animation
         fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])
@@ -174,6 +188,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //updatePlayerSpeed()
         
         updateScore()
+        
+        updateProgressBar()
         
         //updateTankPosition() //TODO delete this function
         
@@ -636,6 +652,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("dash stopped")
     }
     
+    func updateProgressBar(){
+        
+    }
     
 }
 
