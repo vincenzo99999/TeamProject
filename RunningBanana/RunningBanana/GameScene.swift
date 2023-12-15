@@ -45,7 +45,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     weak var floorContactDelegate: FloorContactDelegate?
     var floor:SKSpriteNode!
     var roadSprite: SKSpriteNode? = nil
-    
+    var sign: SKSpriteNode!
     //Score
     var scoreLabel:SKLabelNode!
     var score:CGFloat=0
@@ -65,6 +65,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var watermelonSpawn: Spawnable?
     var obstacleSpawn: Obstacle?
     var holeSpawn: Hole?
+    var signSpawn: Sign?
     var tankSpawn: Tank?
     
     //Running Time
@@ -113,10 +114,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Append layers in order from the furthest one to the closest
         parallaxLayerSprites?.append(backTreeSprite)
-        parallaxLayerSprites?.append(middleTreeSprite)
-        parallaxLayerSprites?.append(lightSprite)
         parallaxLayerSprites?.append(frontTreeSprite)
         
+
         
         createFloor()
         createPlayer()
@@ -388,6 +388,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         holeSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
     
+    func createSign(){
+        sign=SKSpriteNode(imageNamed: "hole")
+        sign.position.x = 70
+        sign.name="hole"
+        sign.size=CGSize(width: sign.size.width/6, height: sign.size.height/6)
+        sign.zPosition=12
+
+        
+        
+        let horizontalPosition = (scene?.frame.width)! + sign.size.width
+        let elevation = floor.position.y-200
+        
+        signSpawn = Sign(scene: self, sprite: sign, parallax: parallax!, floorHeight: floorHeight+20)
+        signSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+    }
     func createScore(){
         
         scoreLabel = SKLabelNode(text:"\(Int(score))")
