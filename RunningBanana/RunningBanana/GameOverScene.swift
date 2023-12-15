@@ -11,16 +11,20 @@
 import SpriteKit
 import UIKit
 import Foundation
+import AVFoundation
+
 
 class GameOverScene: SKScene {
     var score: Int = 0
     var watermelonCollected: Int = 0
+    var backgroundMusicPlayer: AVAudioPlayer?
 
     init(size: CGSize, score: Int, watermelonCollected: Int) {
         super.init(size: size)
         self.score = score
         self.watermelonCollected = watermelonCollected
         setupUI()
+        
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -80,6 +84,11 @@ class GameOverScene: SKScene {
         menuButton.name = "menuButton"
         addChild(menuButton)
     }
+    
+    func stopBackgroundMusic() {
+        backgroundMusicPlayer?.stop()
+    }
+
 
     func restartGame() {
         if let skView = self.view as? SKView {
@@ -90,6 +99,25 @@ class GameOverScene: SKScene {
         }
     }
 
+    func playBackgroundMusic(filename: String) {
+        guard let url = Bundle.main.url(forResource: filename, withExtension: nil) else {
+            print("Could not find file: \(filename)")
+            return
+        }
+
+        do {
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundMusicPlayer?.numberOfLoops = -1 // Loop indefinitely
+            backgroundMusicPlayer?.prepareToPlay()
+            backgroundMusicPlayer?.play()
+        } catch let error as NSError {
+            print("Error playing music: \(error.localizedDescription)")
+        }
+    }
+
+    
+    
+    
     func askForName() {
         if let skView = self.view as? SKView {
             let enterNameScene = EnterNameScene(size: skView.bounds.size)
