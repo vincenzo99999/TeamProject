@@ -49,6 +49,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var floor:SKSpriteNode!
     var roadSprite: SKSpriteNode? = nil
     var sign: SKSpriteNode!
+    
     //Score
     var scoreLabel:SKLabelNode!
     var score:CGFloat=0
@@ -65,6 +66,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var obstacle:SKSpriteNode!
     var hole:SKSpriteNode!
     var tank:SKSpriteNode!
+    var cascione: SKSpriteNode!
     
     //Spawn
     var watermelonSpawn: Spawnable?
@@ -72,6 +74,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var holeSpawn: Hole?
     var signSpawn: Sign?
     var tankSpawn: Tank?
+    var cascioneSpawn: Cascione?
     
     //Running Time
     var startTime: TimeInterval? = nil
@@ -113,6 +116,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var progressBar: SKSpriteNode!
     var progressPercentage: CGFloat = 0.0
     var progressBarSize: CGFloat = 300.0
+    
+    
     
     override func sceneDidLoad() {
         
@@ -158,6 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createHole()
         createWatermelon()
         createObstacle()
+        createCascione()
         createTank()
         setupPauseButton()
     }
@@ -179,6 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelonSpawn?.update()
         tankSpawn?.update()
         holeSpawn?.update()
+        cascioneSpawn?.update()
         
         CheckIfGrounded()
         
@@ -282,7 +289,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    //TODO spawn watermelons outside the screen
+
+    func createCascione(){
+        
+        let scale = 20.0
+        
+        cascione = SKSpriteNode(imageNamed: "box")
+        cascione.size = CGSize(width: cascione.size.width/scale, height: cascione.size.height/scale)
+        
+        // let randomNumber: Int = Int.random(in:1..<3)
+        //obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
+        //obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
+        
+        cascione.physicsBody = SKPhysicsBody(rectangleOf: cascione.size)
+        cascione.physicsBody?.affectedByGravity=true
+        cascione.physicsBody?.mass = 100
+        cascione.physicsBody?.usesPreciseCollisionDetection = true
+        
+        cascione.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+        cascione.physicsBody?.collisionBitMask = PhysicsCategory.floor | PhysicsCategory.player
+        
+        cascione.physicsBody?.isDynamic = true
+        cascione.zPosition=8
+        cascione.physicsBody?.allowsRotation = false
+        
+        
+        
+        //addChild(obstacle)
+        
+        let horizontalPosition = (scene?.frame.width)! + obstacle.size.width
+        let elevation = -floorHeight + 1
+        
+        cascioneSpawn = Cascione(scene: self, sprite: cascione, parallax: parallax!, floorHeight: floorHeight)
+        cascioneSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        
+    }
+    
     func createWatermelon(){
         
         let scale = 40.0
