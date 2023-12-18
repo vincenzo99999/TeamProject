@@ -164,6 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //Spawnables must be created AFTER parallax
         createHole()
         createWatermelon()
+        createSign()
         createObstacle()
         createCascione()
         createTank()
@@ -187,6 +188,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelonSpawn?.update()
         tankSpawn?.update()
         holeSpawn?.update()
+        signSpawn?.update()
         cascioneSpawn?.update()
         
         CheckIfGrounded()
@@ -455,19 +457,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createSign(){
-        sign=SKSpriteNode(imageNamed: "hole")
+        sign=SKSpriteNode(imageNamed: "cartello")
         sign.position.x = 70
-        sign.name="hole"
-        sign.size=CGSize(width: sign.size.width/6, height: sign.size.height/6)
-        sign.zPosition=12
+        sign.name="cartello"
+        sign.size=CGSize(width: sign.size.width/8, height: sign.size.height/8)
+        sign.zPosition=0.5
 
         
         
         let horizontalPosition = (scene?.frame.width)! + sign.size.width
-        let elevation = floor.position.y-200
-        
-        signSpawn = Sign(scene: self, sprite: sign, parallax: parallax!, floorHeight: floorHeight+20)
-        signSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        let elevation = floor.position.y + 100
+        if Int.random(in: 0...1000)<1{
+            signSpawn = Sign(scene: self, sprite: sign, parallax: parallax!, floorHeight: floorHeight)
+            signSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        }
     }
     func createScore(){
         scoreBackground = SKShapeNode(path:
