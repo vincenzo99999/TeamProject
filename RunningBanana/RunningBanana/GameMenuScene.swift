@@ -76,14 +76,6 @@ class GameMenuScene: SKScene {
         leaderboardButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
         leaderboardButton.name = "leaderboard"
         addChild(leaderboardButton)
-        
-        let tutorialButton = SKLabelNode(text: "Tutorial")
-               tutorialButton.fontColor = .black
-               tutorialButton.fontName = "Helvetica-Bold"
-               tutorialButton.fontSize = 30.0
-               tutorialButton.position = CGPoint(x: frame.midX, y: frame.midY - 75) // Adjust position as needed
-               tutorialButton.name = "tutorialButton"
-               addChild(tutorialButton)
 
     }
 
@@ -101,8 +93,6 @@ class GameMenuScene: SKScene {
                 showShop()
             case "leaderboard":
                 showLeaderboard()
-            case "tutorialButton":
-                goToTutorial()
             case "back":
                 goToMainMenu()
             default:
@@ -150,14 +140,6 @@ class GameMenuScene: SKScene {
             let scene = GameMenuScene(size: skView.bounds.size)
             scene.scaleMode = .aspectFill
             skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
-        }
-    }
-    
-    func goToTutorial() {
-        if let skView = self.view as? SKView {
-            let tutorialScene = TutorialScene(size: skView.bounds.size)
-            tutorialScene.scaleMode = .aspectFill
-            skView.presentScene(tutorialScene, transition: SKTransition.fade(withDuration: 0.5))
         }
     }
 
