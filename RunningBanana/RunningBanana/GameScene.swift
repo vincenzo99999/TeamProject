@@ -3,12 +3,15 @@
 //
 //  Created by Vincenzo Eboli on 05/12/23.
 //  Code partially cleaned by Arturo - "I did what i could"
+//  Designed with hopes and dreams by Giovanni - "Uagliu, we have to push!"
+
 
 import SpriteKit
 import GameplayKit
 import Foundation
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct PhysicsCategory{
     static let none: UInt32 = 0
@@ -29,6 +32,7 @@ protocol FloorContactDelegate: AnyObject {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player:SKSpriteNode!
+    var backgroundMusicPlayer: AVAudioPlayer?
     
     //Counters
     var obstacleCounter:Int=0
@@ -44,10 +48,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     weak var floorContactDelegate: FloorContactDelegate?
     var floor:SKSpriteNode!
     var roadSprite: SKSpriteNode? = nil
+    var sign: SKSpriteNode!
     
     //Score
     var scoreLabel:SKLabelNode!
     var score:CGFloat=0
+    var scoreBackground = SKShapeNode()
+    var scoreMultiplierLabel: SKLabelNode?
+    var scoreMultiplier: CGFloat = 0
     
     //Parallax Array
     var parallaxLayerSprites: [SKSpriteNode?]? = []
@@ -58,12 +66,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var obstacle:SKSpriteNode!
     var hole:SKSpriteNode!
     var tank:SKSpriteNode!
+    var cascione: SKSpriteNode!
     
     //Spawn
     var watermelonSpawn: Spawnable?
     var obstacleSpawn: Obstacle?
     var holeSpawn: Hole?
+    var signSpawn: Sign?
     var tankSpawn: Tank?
+    var cascioneSpawn: Cascione?
     
     //Running Time
     var startTime: TimeInterval? = nil
@@ -72,7 +83,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //position and velocity
     var posizionex: CGFloat = 1.4
-    var velocityuser: CGFloat = 1.0
+    var velocityuser: CGFloat = 2.0
     
     //Animation
     var rotateLeft = SKAction.rotate(toAngle: .pi/3, duration: 0.6)
@@ -82,14 +93,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var jumpRotation = SKAction.rotate(toAngle: .pi/4, duration: 0.6)
     var resetRotation = SKAction.rotate(toAngle: 0, duration: 0.6)
     
+    var fadeIn = SKAction.fadeIn(withDuration: 0.2)
+    var scale = SKAction.scale(by: 1.3, duration: 0.2)
+    var fadeOut = SKAction.fadeOut(withDuration: 0.2)
+    
+    var fadeNScale: SKAction!
     
     //touch amount
     var touchingForSeconds: TimeInterval = 0.0
     var countTouchTime: Bool = false
     var isGamePaused: Bool = false
-
+    
+    //Dash
+    var dashSpeed: CGFloat = 30.0
+    var isDashing = false
+    var isDashStarted = false
+    var dashStartTime: TimeInterval = 0.0
+    var dashTimer: TimeInterval = 0.0
+    
+    //Milestone
+    let milestoneArray: [CGFloat] = [100.0, 200.0, 500.0]
+    var progressBar: SKSpriteNode!
+    var progressPercentage: CGFloat = 0.0
+    var progressBarSize: CGFloat = 300.0
+    
+    
     
     override func sceneDidLoad() {
+        
+        playBackgroundMusic(filename: "TrerroteRiff.mp3") //Music (Approved by Tony!)
+        
+        //Animation
+        fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])
+        fadeNScale.timingMode = .easeOut
         
         //set anchor point
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -106,10 +142,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //Append layers in order from the furthest one to the closest
         parallaxLayerSprites?.append(backTreeSprite)
-        parallaxLayerSprites?.append(middleTreeSprite)
-        parallaxLayerSprites?.append(lightSprite)
         parallaxLayerSprites?.append(frontTreeSprite)
         
+
         
         createFloor()
         createPlayer()
@@ -128,6 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createHole()
         createWatermelon()
         createObstacle()
+        createCascione()
         createTank()
         setupPauseButton()
     }
@@ -149,6 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelonSpawn?.update()
         tankSpawn?.update()
         holeSpawn?.update()
+        cascioneSpawn?.update()
         
         CheckIfGrounded()
         
@@ -156,7 +193,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //updatePlayerSpeed()
         
         updateScore()
-        
+                
         //updateTankPosition() //TODO delete this function
         
         //Shold think about nitro implementation
@@ -166,6 +203,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if(countTouchTime){
             touchingForSeconds = currentTime - elapsedTime!
             //print("Touch time \(touchingForSeconds)")
+        }
+        
+        if isDashing {
+            
+            if !isDashStarted {
+                isDashStarted = true
+                dashStartTime = elapsedTime!
+                startDash()
+            }
+            
+            dashTimer = elapsedTime! - dashStartTime
+            
+            if dashTimer >= 0.2 {
+                isDashStarted = false
+                stopDash()
+            }
         }
         
         
@@ -236,7 +289,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    //TODO spawn watermelons outside the screen
+
+    func createCascione(){
+        
+        let scale = 20.0
+        
+        cascione = SKSpriteNode(imageNamed: "box")
+        cascione.size = CGSize(width: cascione.size.width/scale, height: cascione.size.height/scale)
+        
+        // let randomNumber: Int = Int.random(in:1..<3)
+        //obstacle = SKSpriteNode(color: .yellow, size: CGSize(width: 50, height: 50))
+        //obstacle.position = CGPoint(x: 200, y: -floorHeight + 1)  // Imposta la posizione del pavimento
+        
+        cascione.physicsBody = SKPhysicsBody(rectangleOf: cascione.size)
+        cascione.physicsBody?.affectedByGravity=true
+        cascione.physicsBody?.mass = 100
+        cascione.physicsBody?.usesPreciseCollisionDetection = true
+        
+        cascione.physicsBody?.categoryBitMask = PhysicsCategory.obstacle
+        cascione.physicsBody?.collisionBitMask = PhysicsCategory.floor | PhysicsCategory.player
+        
+        cascione.physicsBody?.isDynamic = true
+        cascione.zPosition=8
+        cascione.physicsBody?.allowsRotation = false
+        
+        
+        
+        //addChild(obstacle)
+        
+        let horizontalPosition = (scene?.frame.width)! + obstacle.size.width
+        let elevation = -floorHeight + 1
+        
+        cascioneSpawn = Cascione(scene: self, sprite: cascione, parallax: parallax!, floorHeight: floorHeight)
+        cascioneSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+        
+    }
+    
     func createWatermelon(){
         
         let scale = 40.0
@@ -257,7 +345,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         watermelon.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         let horizontalPosition = (scene?.frame.width)! + watermelon.size.width
-        let elevation = CGFloat.random(in: -(floorHeight + 50.0)..<((scene?.size.height)!/5))
+        let elevation = CGFloat.random(in: (-floorHeight + 150.0)..<((scene?.size.height)!/5))
         
         watermelonSpawn = Watermelon(scene: self, sprite: watermelon, parallax: parallax!, floorHeight: floorHeight)
         watermelonSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation+20))
@@ -324,9 +412,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         tank.physicsBody?.categoryBitMask = PhysicsCategory.tank
         tank.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        tank.physicsBody?.collisionBitMask = PhysicsCategory.none
         
         let horizontalPosition = (scene?.frame.width)! + tank.size.width
-        let elevation = CGFloat.random(in: -(floorHeight + 50.0)..<((scene?.size.height)!/5))
+        let elevation = CGFloat.random(in: (-floorHeight + 150.0)..<((scene?.size.height)!/5))
         
         tankSpawn = Tank(scene: self, sprite: tank, parallax: parallax!, floorHeight: floorHeight)
         tankSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition, y: elevation+20))
@@ -363,14 +452,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         holeSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
     }
     
+    func createSign(){
+        sign=SKSpriteNode(imageNamed: "hole")
+        sign.position.x = 70
+        sign.name="hole"
+        sign.size=CGSize(width: sign.size.width/6, height: sign.size.height/6)
+        sign.zPosition=12
+
+        
+        
+        let horizontalPosition = (scene?.frame.width)! + sign.size.width
+        let elevation = floor.position.y-200
+        
+        signSpawn = Sign(scene: self, sprite: sign, parallax: parallax!, floorHeight: floorHeight+20)
+        signSpawn!.spawn(spawnPosition: CGPoint(x: horizontalPosition,y: elevation))
+    }
     func createScore(){
+        scoreBackground = SKShapeNode(path:
+                                        CGPath(roundedRect: CGRect(x: 0, y: 0,width: 180, height: 90), cornerWidth: 30, cornerHeight: 30, transform: nil))
+        scoreBackground.fillColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+        scoreBackground.strokeColor = .white
+        scoreBackground.zPosition = 12
+        
+        //MODIFY THIS ONE TO CHANGE POSITION OF THE SCORE
+        scoreBackground.position = CGPoint(x: -400, y: 100)
+        
         scoreLabel = SKLabelNode(text:"\(Int(score))")
         scoreLabel.fontSize=80.0
-        scoreLabel.fontColor = .yellow
+        scoreLabel.fontColor = .white
+        scoreLabel.position=CGPoint(x: 90, y: 18)
+        scoreLabel.zPosition=13
         
-        scoreLabel.position=CGPoint(x:0, y: 100)
-        scoreLabel.zPosition=12
-        addChild(scoreLabel)
+        scoreMultiplier = (velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        scoreMultiplierLabel = SKLabelNode(text: "x\(scoreMultiplier)")
+        scoreMultiplierLabel?.position = CGPoint(x: 225, y: 30)
+        scoreMultiplierLabel?.fontColor = .black
+        
+        
+        
+        scoreBackground.addChild(scoreLabel)
+        scoreBackground.addChild(scoreMultiplierLabel!)
+        
+        addChild(scoreBackground)
     }
     
     
@@ -439,7 +562,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func updateVelocityUser(){
-        velocityuser = velocityuser * elapsedTime! * 0.025
+        velocityuser = velocityuser + 0.3
+        print(velocityuser)
     }
     
     func updateHolePosition(){
@@ -447,7 +571,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func updateScore(){
-        score = score+(velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        
+        scoreMultiplier = (velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
+        scoreMultiplierLabel!.text = "x\(Double(round(scoreMultiplier * 100)/100))"
+        
+        score = score + scoreMultiplier
         scoreLabel.text = "\(Int(score))"
     }
     
@@ -463,33 +591,57 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let gameOverScene = GameOverScene(size: size, score: Int(score), watermelonCollected: obstacleCounter)
         gameOverScene.scaleMode = scaleMode
         view?.presentScene(gameOverScene)
+        stopBackgroundMusic() // Stop the music
     }
     
+    
+
     
     public func didBegin(_ contact: SKPhysicsContact) {
         let firstBody: SKPhysicsBody = contact.bodyA
         let secondBody: SKPhysicsBody = contact.bodyB
+        //Make 1 function for each collision
         
-        if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
+        func watermelonTouch(_ node: SKNode) {
             node.removeFromParent()
             watermelonCollectedHandler+=1
             print("melons: " + String(watermelonCollectedHandler))
+            
+            let watermelonAddedSprite: SKSpriteNode = watermelon.copy() as! SKSpriteNode
+            watermelonAddedSprite.physicsBody?.contactTestBitMask = PhysicsCategory.none
+            watermelonAddedSprite.position = scoreMultiplierLabel!.position
+            scoreBackground.addChild(watermelonAddedSprite)
+            fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut, SKAction.removeFromParent()])
+            fadeNScale.timingMode = .easeInEaseOut
+            
+            fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut])
+            
+            watermelonAddedSprite.run(fadeNScale)
+            
+        }
+
+        if let node = firstBody.node, node.name == "Watermelon" && secondBody.node?.name=="player"{
+            watermelonTouch(node)
+            updateVelocityUser()
+
         }
         if let node = secondBody.node, node.name == "Watermelon" && firstBody.node?.name=="player" {
-            node.removeFromParent()
-            watermelonCollectedHandler+=1
-            print("melons: " + String(watermelonCollectedHandler))
+            watermelonTouch(node)
+            updateVelocityUser()
+
         }
         if let node = firstBody.node, node.name == "tank" && secondBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
+            isDashing = true
             print("Tanks: " + String(tankCounter))
         }
         if let node = secondBody.node, node.name == "tank" && firstBody.node?.name=="player" {
             node.removeFromParent()
             tankCounter+=1
             createTank()
+            isDashing = true
             print("Tanks: " + String(tankCounter))
         }
         if let node = secondBody.node, node.name == "obstacle" && firstBody.node?.name == "player"{
@@ -525,8 +677,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func setupPauseButton() {
-        let pauseButton = SKSpriteNode(imageNamed: "pauseButton") // Replace with your pause button image
-        pauseButton.position = CGPoint(x: frame.midX + 300, y: frame.midY + 150)
+        let pauseButton = SKSpriteNode(imageNamed: "pauseButton")
+        pauseButton.position = CGPoint(x: frame.midX + 400, y: frame.midY + 150)
         pauseButton.size.width=(pauseButton.size.width)/5
         pauseButton.size.height=(pauseButton.size.height)/5
         pauseButton.name = "pauseButton"
@@ -534,6 +686,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(pauseButton)
     }
     
+    func startDash(){
+        parallax?.speed = dashSpeed
+        print("dashing")
+    }
+    
+    func stopDash(){
+        isDashing = false
+        parallax?.speed = velocityuser
+        print("dash stopped")
+    }
+    
+    func playBackgroundMusic(filename: String) {
+        guard let url = Bundle.main.url(forResource: filename, withExtension: nil) else {
+            print("Could not find file: \(filename)")
+            return
+        }
+
+        do {
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundMusicPlayer?.numberOfLoops = -1 // Loop indefinitely
+            backgroundMusicPlayer?.prepareToPlay()
+            backgroundMusicPlayer?.play()
+        } catch let error as NSError {
+            print("Error playing music: \(error.localizedDescription)")
+        }
+    }
+    
+    func stopBackgroundMusic() {
+        backgroundMusicPlayer?.stop()
+    }
     
 }
 

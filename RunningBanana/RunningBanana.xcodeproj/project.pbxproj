@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4E49B9A12B2A0CAA002D7515 /* ThisStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */; };
+		4E3BFE8E2B2CB2F800E07429 /* Cascione.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3BFE8D2B2CB2F800E07429 /* Cascione.swift */; };
 		4E6805122B2220C400E49679 /* MyScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4E6805112B2220C400E49679 /* MyScene.sks */; };
 		4E6805142B23A28500E49679 /* Parallax.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805132B23A28500E49679 /* Parallax.swift */; };
 		4E6805162B274CEF00E49679 /* Spawnable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6805152B274CEF00E49679 /* Spawnable.swift */; };
@@ -28,11 +28,14 @@
 		850B7C1A2B28AD4400D3AE0F /* GameMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */; };
 		850B7C1C2B28B3B400D3AE0F /* LeaderboardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850B7C1B2B28B3B400D3AE0F /* LeaderboardScene.swift */; };
 		851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */; };
+		8523B8A22B2B552D002DBFB5 /* RoadSign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523B8A12B2B552D002DBFB5 /* RoadSign.swift */; };
+		8523B8A62B2C9C2F002DBFB5 /* treruote.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8523B8A52B2C9C2F002DBFB5 /* treruote.mp3 */; };
+		8523B8A82B2DF078002DBFB5 /* TutorialScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */; };
 		858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858AFB352B2A08D300F23731 /* EnterNameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisStorage.swift; sourceTree = "<group>"; usesTabs = 0; };
+		4E3BFE8D2B2CB2F800E07429 /* Cascione.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cascione.swift; sourceTree = "<group>"; };
 		4E6805112B2220C400E49679 /* MyScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyScene.sks; sourceTree = "<group>"; };
 		4E6805132B23A28500E49679 /* Parallax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parallax.swift; sourceTree = SOURCE_ROOT; };
 		4E6805152B274CEF00E49679 /* Spawnable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spawnable.swift; sourceTree = "<group>"; };
@@ -54,6 +57,9 @@
 		850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMenuScene.swift; sourceTree = "<group>"; };
 		850B7C1B2B28B3B400D3AE0F /* LeaderboardScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardScene.swift; sourceTree = "<group>"; };
 		851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		8523B8A12B2B552D002DBFB5 /* RoadSign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadSign.swift; sourceTree = "<group>"; };
+		8523B8A52B2C9C2F002DBFB5 /* treruote.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = treruote.mp3; sourceTree = "<group>"; };
+		8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScene.swift; sourceTree = "<group>"; };
 		858AFB352B2A08D300F23731 /* EnterNameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +93,8 @@
 		54C6DD702B1F607500BBE823 /* RunningBanana */ = {
 			isa = PBXGroup;
 			children = (
+				8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */,
+				8523B8A12B2B552D002DBFB5 /* RoadSign.swift */,
 				858AFB352B2A08D300F23731 /* EnterNameScene.swift */,
 				543F92CB2B289E9B0054B289 /* Hole.swift */,
 				850B7C192B28AD4400D3AE0F /* GameMenuScene.swift */,
@@ -96,7 +104,7 @@
 				4E6805112B2220C400E49679 /* MyScene.sks */,
 				54C6DD752B1F607500BBE823 /* Actions.sks */,
 				54C6DD772B1F607500BBE823 /* GameScene.swift */,
-				4E49B9A02B2A0CAA002D7515 /* ThisStorage.swift */,
+				4E3BFE8D2B2CB2F800E07429 /* Cascione.swift */,
 				4E6805152B274CEF00E49679 /* Spawnable.swift */,
 				543F92CD2B28A6CC0054B289 /* Tank.swift */,
 				4E6805172B287F2A00E49679 /* Obstacle.swift */,
@@ -105,6 +113,7 @@
 				4E6805132B23A28500E49679 /* Parallax.swift */,
 				54C6DD792B1F607500BBE823 /* GameViewController.swift */,
 				54C6DD7B2B1F607500BBE823 /* Main.storyboard */,
+				8523B8A52B2C9C2F002DBFB5 /* treruote.mp3 */,
 				54C6DD802B1F607600BBE823 /* LaunchScreen.storyboard */,
 				5481B1EF2B2B3AA300D4EC5E /* TrerroteRiff.mp3 */,
 				5481B1F12B2B4C1B00D4EC5E /* Assets.xcassets */,
@@ -174,6 +183,7 @@
 				5481B1F42B2B4C2300D4EC5E /* treruote.imageset in Resources */,
 				54C6DD7D2B1F607500BBE823 /* Main.storyboard in Resources */,
 				54C6DD742B1F607500BBE823 /* GameScene.sks in Resources */,
+				8523B8A62B2C9C2F002DBFB5 /* treruote.mp3 in Resources */,
 				5481B1F02B2B3AA300D4EC5E /* TrerroteRiff.mp3 in Resources */,
 				54C6DD822B1F607600BBE823 /* LaunchScreen.storyboard in Resources */,
 				5481B1F22B2B4C1B00D4EC5E /* Assets.xcassets in Resources */,
@@ -189,14 +199,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8523B8A82B2DF078002DBFB5 /* TutorialScene.swift in Sources */,
 				850B7C1C2B28B3B400D3AE0F /* LeaderboardScene.swift in Sources */,
 				858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */,
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
+				4E3BFE8E2B2CB2F800E07429 /* Cascione.swift in Sources */,
 				851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */,
+				8523B8A22B2B552D002DBFB5 /* RoadSign.swift in Sources */,
 				54C6DD7A2B1F607500BBE823 /* GameViewController.swift in Sources */,
 				4E6805182B287F2A00E49679 /* Obstacle.swift in Sources */,
 				543F92CC2B289E9B0054B289 /* Hole.swift in Sources */,
-				4E49B9A12B2A0CAA002D7515 /* ThisStorage.swift in Sources */,
 				4E6805142B23A28500E49679 /* Parallax.swift in Sources */,
 				4E6805162B274CEF00E49679 /* Spawnable.swift in Sources */,
 				543F92CE2B28A6CC0054B289 /* Tank.swift in Sources */,
@@ -354,7 +366,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8N7NYC4266;
+				DEVELOPMENT_TEAM = 4M3932AY72;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -368,7 +380,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vincenzoeboli.RunningBanana;
+				PRODUCT_BUNDLE_IDENTIFIER = otrerrote.RunningBanana;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -386,7 +398,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8N7NYC4266;
+				DEVELOPMENT_TEAM = 4M3932AY72;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -400,7 +412,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vincenzoeboli.RunningBanana;
+				PRODUCT_BUNDLE_IDENTIFIER = otrerrote.RunningBanana;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

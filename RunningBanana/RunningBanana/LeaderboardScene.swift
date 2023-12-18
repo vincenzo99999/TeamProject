@@ -43,6 +43,7 @@ class LeaderboardScene: SKScene {
         // FONT + ROBA TESTO
         let titleLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
         titleLabel.text = "Leaderboard"
+        titleLabel.fontColor = .black
         titleLabel.fontSize = 50.0
         titleLabel.position = CGPoint(x: frame.midX, y: frame.midY + 150)
         addChild(titleLabel)
@@ -50,8 +51,9 @@ class LeaderboardScene: SKScene {
         // UGUALE A SOPRA MA INIZIALIZZA TUTTA LA ROBA
         for (index, entry) in leaderboardEntries.enumerated() {
             let entryLabel = SKLabelNode(fontNamed: "Helvetica-Bold")
-            entryLabel.text = "(entry.name): (entry.score)"
-            entryLabel.fontSize = 30.0
+            entryLabel.text = "\(entry.name): \(entry.score)"
+            entryLabel.fontColor = .black
+            entryLabel.fontSize = 20.0
             entryLabel.position = CGPoint(x: frame.midX, y: frame.midY + 100 - CGFloat(index * 40))
             addChild(entryLabel)
         }
@@ -62,6 +64,7 @@ class LeaderboardScene: SKScene {
         backButton.fontSize = 30.0
         backButton.position = CGPoint(x: frame.midX, y: frame.midY - 150)
         backButton.name = "back"
+        backButton.fontColor = .white
         addChild(backButton)
     }
 

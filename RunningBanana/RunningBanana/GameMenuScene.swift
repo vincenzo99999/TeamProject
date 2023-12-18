@@ -15,7 +15,7 @@ class GameMenuScene: SKScene {
     override func didMove(to view: SKView) {
         setupBackground()
         setupUI()
-        playBackgroundMusic(filename: "TrerroteRiff")
+        playBackgroundMusic(filename: "treruote")
        
     }
     
@@ -45,7 +45,7 @@ class GameMenuScene: SKScene {
     }
 
     func setupUI() {
-        let titleLabel = SKLabelNode(text: "Game Menu")
+        let titleLabel = SKLabelNode(text: "Three Wheels")
         titleLabel.fontColor = .black
         titleLabel.fontName="helvetica-bold"
         titleLabel.fontSize = 50.0
@@ -71,33 +71,46 @@ class GameMenuScene: SKScene {
 
         let leaderboardButton = SKLabelNode(text: "Leaderboard")
         leaderboardButton.fontColor = .black
-        leaderboardButton.fontName="helvetica-bolf"
+        leaderboardButton.fontName="helvetica-bold"
         leaderboardButton.fontSize = 30.0
         leaderboardButton.position = CGPoint(x: frame.midX, y: frame.midY - 100)
         leaderboardButton.name = "leaderboard"
         addChild(leaderboardButton)
+        
+        let tutorialButton = SKLabelNode(text: "Tutorial")
+               tutorialButton.fontColor = .black
+               tutorialButton.fontName = "Helvetica-Bold"
+               tutorialButton.fontSize = 30.0
+               tutorialButton.position = CGPoint(x: frame.midX, y: frame.midY - 75) // Adjust position as needed
+               tutorialButton.name = "tutorialButton"
+               addChild(tutorialButton)
+
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        
+
         let location = touch.location(in: self)
         let touchedNodes = nodes(at: location)
-        
+
         for node in touchedNodes {
-            if node.name == "play" {
+            switch node.name {
+            case "play":
                 startGame()
-            } else if node.name == "shop" {
+            case "shop":
                 showShop()
-            } else if node.name == "leaderboard" {
+            case "leaderboard":
                 showLeaderboard()
-                
-                if node.name == "back" {
-                    goToMainMenu()
-                }
+            case "tutorialButton":
+                goToTutorial()
+            case "back":
+                goToMainMenu()
+            default:
+                break
             }
         }
     }
+
     private func goToMainMenu() {
         if let skView = self.view as? SKView {
             let scene = GameMenuScene(size: skView.bounds.size)
@@ -137,6 +150,14 @@ class GameMenuScene: SKScene {
             let scene = GameMenuScene(size: skView.bounds.size)
             scene.scaleMode = .aspectFill
             skView.presentScene(scene, transition: SKTransition.fade(withDuration: 0.5))
+        }
+    }
+    
+    func goToTutorial() {
+        if let skView = self.view as? SKView {
+            let tutorialScene = TutorialScene(size: skView.bounds.size)
+            tutorialScene.scaleMode = .aspectFill
+            skView.presentScene(tutorialScene, transition: SKTransition.fade(withDuration: 0.5))
         }
     }
 
