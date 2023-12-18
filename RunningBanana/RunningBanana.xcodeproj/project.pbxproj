@@ -91,7 +91,6 @@
 		54C6DD702B1F607500BBE823 /* RunningBanana */ = {
 			isa = PBXGroup;
 			children = (
-				8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */,
 				8523B8A12B2B552D002DBFB5 /* Sign.swift */,
 				858AFB352B2A08D300F23731 /* EnterNameScene.swift */,
 				543F92CB2B289E9B0054B289 /* Hole.swift */,
@@ -363,7 +362,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U8N4V9Z76G;
+				DEVELOPMENT_TEAM = 4M3932AY72;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -377,7 +376,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vincenz.runningBanana;
+				PRODUCT_BUNDLE_IDENTIFIER = otrerrote.RunningBanana;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -395,7 +394,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U8N4V9Z76G;
+				DEVELOPMENT_TEAM = 4M3932AY72;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -409,7 +408,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = vincenz.runningBanana;
+				PRODUCT_BUNDLE_IDENTIFIER = otrerrote.RunningBanana;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
