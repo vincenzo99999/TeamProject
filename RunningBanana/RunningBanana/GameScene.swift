@@ -472,7 +472,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                         CGPath(roundedRect: CGRect(x: 0, y: 0,width: 180, height: 90), cornerWidth: 30, cornerHeight: 30, transform: nil))
         scoreBackground.fillColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
         scoreBackground.strokeColor = .white
-        scoreBackground.zPosition = 12
+        scoreBackground.zPosition = 15
         
         //MODIFY THIS ONE TO CHANGE POSITION OF THE SCORE
         scoreBackground.position = CGPoint(x: -400, y: 100)
@@ -481,7 +481,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.fontSize=80.0
         scoreLabel.fontColor = .white
         scoreLabel.position=CGPoint(x: 90, y: 18)
-        scoreLabel.zPosition=13
+        scoreLabel.zPosition=16
         
         scoreMultiplier = (velocityuser + CGFloat(obstacleCounter) + CGFloat(watermelonCollectedHandler)) * 0.025
         scoreMultiplierLabel = SKLabelNode(text: "x\(scoreMultiplier)")
@@ -609,6 +609,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let watermelonAddedSprite: SKSpriteNode = watermelon.copy() as! SKSpriteNode
             watermelonAddedSprite.physicsBody?.contactTestBitMask = PhysicsCategory.none
+            watermelonAddedSprite.physicsBody?.categoryBitMask = PhysicsCategory.none
             watermelonAddedSprite.position = scoreMultiplierLabel!.position
             scoreBackground.addChild(watermelonAddedSprite)
             fadeNScale = SKAction.sequence([SKAction.group([fadeIn,scale]),fadeOut, SKAction.removeFromParent()])
