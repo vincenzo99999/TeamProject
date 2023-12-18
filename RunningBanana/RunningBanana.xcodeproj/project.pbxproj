@@ -30,7 +30,6 @@
 		851A6FB12B2755DD001F5CF3 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */; };
 		8523B8A22B2B552D002DBFB5 /* RoadSign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523B8A12B2B552D002DBFB5 /* RoadSign.swift */; };
 		8523B8A62B2C9C2F002DBFB5 /* treruote.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8523B8A52B2C9C2F002DBFB5 /* treruote.mp3 */; };
-		8523B8A82B2DF078002DBFB5 /* TutorialScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */; };
 		858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 858AFB352B2A08D300F23731 /* EnterNameScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +58,6 @@
 		851A6FB02B2755DD001F5CF3 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		8523B8A12B2B552D002DBFB5 /* RoadSign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoadSign.swift; sourceTree = "<group>"; };
 		8523B8A52B2C9C2F002DBFB5 /* treruote.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = treruote.mp3; sourceTree = "<group>"; };
-		8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialScene.swift; sourceTree = "<group>"; };
 		858AFB352B2A08D300F23731 /* EnterNameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterNameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,7 +91,6 @@
 		54C6DD702B1F607500BBE823 /* RunningBanana */ = {
 			isa = PBXGroup;
 			children = (
-				8523B8A72B2DF078002DBFB5 /* TutorialScene.swift */,
 				8523B8A12B2B552D002DBFB5 /* RoadSign.swift */,
 				858AFB352B2A08D300F23731 /* EnterNameScene.swift */,
 				543F92CB2B289E9B0054B289 /* Hole.swift */,
@@ -199,7 +196,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8523B8A82B2DF078002DBFB5 /* TutorialScene.swift in Sources */,
 				850B7C1C2B28B3B400D3AE0F /* LeaderboardScene.swift in Sources */,
 				858AFB362B2A08D300F23731 /* EnterNameScene.swift in Sources */,
 				54C6DD782B1F607500BBE823 /* GameScene.swift in Sources */,
@@ -366,9 +362,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-
 				DEVELOPMENT_TEAM = U8N4V9Z76G;
-
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -400,9 +394,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-
 				DEVELOPMENT_TEAM = U8N4V9Z76G;
-
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.arcade-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

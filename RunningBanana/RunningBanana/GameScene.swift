@@ -33,6 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var player:SKSpriteNode!
     var backgroundMusicPlayer: AVAudioPlayer?
+    var touchToJumpLabel: SKLabelNode!
     
     //Counters
     var obstacleCounter:Int=0
@@ -139,6 +140,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let frontTreeSprite = childNode(withName: "frontTreeSprite") as! SKSpriteNode?
         let lightSprite = childNode(withName: "lightSprite") as! SKSpriteNode?
         
+        createTouchToJumpLabel()
         
         //Append layers in order from the furthest one to the closest
         parallaxLayerSprites?.append(backTreeSprite)
@@ -717,6 +719,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func stopBackgroundMusic() {
         backgroundMusicPlayer?.stop()
     }
+    
+    func createTouchToJumpLabel() {
+            touchToJumpLabel = SKLabelNode(text: "Touch to Jump")
+            touchToJumpLabel.fontName = "Helvetica-Bold"
+            touchToJumpLabel.fontColor = .white
+            touchToJumpLabel.fontSize = 24
+            touchToJumpLabel.position = CGPoint(x: frame.midX, y: frame.midY - 100)
+            touchToJumpLabel.zPosition = 10
+            touchToJumpLabel.alpha = 0.0
+            addChild(touchToJumpLabel)
+
+            let fadeIn = SKAction.fadeIn(withDuration: 1.0)
+            let wait = SKAction.wait(forDuration: 3.0)
+            let fadeOut = SKAction.fadeOut(withDuration: 1.0)
+            let remove = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([fadeIn, wait, fadeOut, remove])
+            
+            touchToJumpLabel.run(sequence)
+        }
+    
     
 }
 
